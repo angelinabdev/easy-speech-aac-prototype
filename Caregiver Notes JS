@@ -1,0 +1,133 @@
+
+// --- Caregiver Notes ---
+function getNotesKey() {
+  return `caregiverNotesHistory_${currentUserId}`;
+}
+
+function displayPreviousNotes() {
+  if (!currentUserId) return; 
+  const previousNotesDiv = document.getElementById('previous-notes');
+  const savedNotes = JSON.parse(localStorage.getItem(getNotesKey())) || [];
+
+  previousNotesDiv.innerHTML = '';
+
+  if (savedNotes.length === 0) {
+    previousNotesDiv.textContent = 'No previous notes saved.';
+    return;
+  }
+
+  savedNotes.forEach((noteObj, index) => {
+    const noteElem = document.createElement('div');
+    noteElem.style.padding = '8px';
+    noteElem.style.borderBottom = '1px solid #ccc';
+    noteElem.style.position = 'relative';
+
+    const timeElem = document.createElement('div');
+    timeElem.style.fontSize = '0.8rem';
+    timeElem.style.color = '#666';
+    timeElem.textContent = noteObj.time;
+
+    const textElem = document.createElement('div');
+    textElem.style.marginTop = '4px';
+    textElem.textContent = noteObj.text;
+
+    // Create delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.style.position = 'absolute';
+    deleteBtn.style.top = '8px';
+    deleteBtn.style.right = '8px';
+    deleteBtn.style.backgroundColor = '#e53e3e';
+    deleteBtn.style.color = 'white';
+    deleteBtn.style.border = 'none';
+    deleteBtn.style.borderRadius = '4px';
+    deleteBtn.style.padding = '2px 8px';
+    deleteBtn.style.cursor = 'pointer';
+
+    deleteBtn.addEventListener('click', () => {
+      deleteNote(index);
+    });
+
+    noteElem.appendChild(timeElem);
+    noteElem.appendChild(textElem);
+    noteElem.appendChild(deleteBtn);
+
+    previousNotesDiv.appendChild(noteElem);
+  });
+}
+
+// Delete note by index
+function deleteNote(index) {
+  if (!currentUserId) return; 
+  let savedNotes = JSON.parse(localStorage.getItem(getNotesKey())) || [];
+  savedNotes.splice(index, 1); 
+  localStorage.setItem(getNotesKey(), JSON.stringify(savedNotes));
+  displayPreviousNotes(); 
+}
+    const caregiverNotes = document.getElementById('caregiver-notes');
+    const saveNotesBtn = document.getElementById('save-notes');
+    
+if (saveNotesBtn) {
+  saveNotesBtn.addEventListener('click', () => {
+    if (!currentUserId) {
+      alert("No user logged in.");
+      return;
+    }
+
+        const noteText = caregiverNotes.value.trim();
+        if (!noteText) {
+            alert("Please enter some notes before saving.");
+            return;
+        }
+
+        const savedNotes = JSON.parse(localStorage.getItem(getNotesKey())) || [];
+        const currentTime = new Date().toLocaleString();
+        savedNotes.push({ text: noteText, time: currentTime });
+        localStorage.setItem(getNotesKey(), JSON.stringify(savedNotes));
+
+        caregiverNotes.value = ''; 
+        displayPreviousNotes(); 
+        });
+    }
+    displayPreviousNotes();
+
+// --- Donation Form ---
+const donationForm = document.getElementById('donation-form');
+const donationAmountInput = document.getElementById('donation-amount');
+const donationMessage = document.getElementById('donation-message');
+const totalDonatedElem = document.getElementById('total-donated');
+
+// Load previous total from localStorage
+let totalDonated = parseFloat(localStorage.getItem('totalDonated')) || 0;
+if (totalDonatedElem) totalDonatedElem.textContent = totalDonated.toFixed(2);
+
+donationForm?.addEventListener('submit', e => {
+  e.preventDefault();
+  const amount = parseFloat(donationAmountInput?.value);
+  
+  if (!amount || amount <= 0) {
+    if (donationMessage) {
+      donationMessage.style.color = 'red';
+      donationMessage.textContent = 'Please enter a valid donation amount.';
+    }
+    return;
+  }
+  
+  totalDonated += amount;
+  localStorage.setItem('totalDonated', totalDonated);
+  if (totalDonatedElem) totalDonatedElem.textContent = totalDonated.toFixed(2);
+  
+  if (donationMessage) {
+    donationMessage.style.color = 'green';
+    donationMessage.textContent = `Thank you for your donation of $${amount.toFixed(2)}!`;
+  }
+  
+  // Reset input to default 10
+  if (donationAmountInput) donationAmountInput.value = 10;
+  
+  // Clear message after 3 seconds
+  setTimeout(() => {
+    if (donationMessage) donationMessage.textContent = '';
+  }, 3000);
+});
+
