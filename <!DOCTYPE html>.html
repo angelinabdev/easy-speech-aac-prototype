@@ -1,0 +1,2921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome to Easy Speech AAC</title>
+  
+  <style>
+/* CSS Variables for themes */
+:root {
+  --bg-color: #d3d3d3;
+  --text-color: #374151;
+  --header-bg: #3B82F6;
+  --header-text: #eae7e7;
+  --button-bg: #3B82F6;
+  --button-text: #eae7e7;
+  --button-hover-bg: #2563EB;
+  --button-hover-border: #1D4ED8;
+  --input-bg: #eae7e7;
+  --input-text: #374151;
+  --border-color: #D1D5DB;
+  --planner-item-bg: #3B82F6;
+  --planner-item-text: #eae7e7;
+  --planner-remove-bg: #F97316;
+  --planner-remove-hover: #C2410C;
+  --mood-btn-bg: #eae7e7;
+  --mood-btn-text: #1E40AF;
+  --mood-btn-hover-bg: #BFDBFE;
+  --star-color: #F97316;
+  --star-hover: #C2410C;
+  --textarea-bg: #eae7e7;
+  --textarea-text: #374151;
+  --audio-bg: #eae7e7;
+  --dropzone-bg: #eae7e7;
+  --dropdown-bg: #eae7e7;
+  --dropdown-hover: #eae7e7;
+  --nav-btn-bg: #eae7e7;
+  --nav-btn-text: #374151;
+  --nav-btn-active-bg: #F97316;
+  --nav-btn-active-text: #eae7e7;
+}
+
+body.dark-theme {
+  --bg-color: #121212;               
+  --text-color: #adcbcd;             
+  --header-bg: #1F2937;              
+  --header-text: #adcbcd;            
+  
+  --button-bg: #3b82f6;             
+  --button-text: #adcbcd;            
+  --button-hover-bg: #2563eb;        
+  --button-hover-border: #3b82f6;    
+  
+  --input-bg: #1F2937;             
+  --input-text: #adcbcd;             
+  --border-color: #374151;           
+  
+  --planner-item-bg: #3b82f6;        
+  --planner-item-text: #adcbcd;      
+  --planner-remove-bg: #f97316;       
+  --planner-remove-hover: #fb923c;   
+
+  --mood-btn-bg: #374151;             
+  --mood-btn-text: #adcbcd;           
+  --mood-btn-hover-bg: #1F2937;       
+  
+  --star-color: #f97316;             
+  --star-hover: #fb923c;              
+  
+  --textarea-bg: #1F2937;             
+  --textarea-text: #adcbcd;           
+  
+  --audio-bg: #1F2937;                
+  --dropzone-bg: #1F2937;             
+  --dropdown-bg: #1F2937;             
+  --dropdown-hover: #374151;          
+  
+  --nav-btn-bg: #374151;              
+  --nav-btn-text: #adcbcd;            
+  --nav-btn-active-bg: #f97316;       
+  --nav-btn-active-text: #bfd3d4;     
+}
+/* End themes */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-color);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+header {
+  background: var(--header-bg);
+  color: var(--header-text);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+}
+
+header img {
+  max-width: 140px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.5);
+}
+
+main {
+  max-width: 900px;
+  margin: 2rem auto;
+  background: var(--bg-color);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(156, 163, 175, 0.2);
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+h2 {
+  border-bottom: 3px solid var(--header-bg);
+  padding-bottom: 0.4rem;
+}
+
+section {
+  margin-bottom: 2.5rem;
+}
+
+button, input, select, textarea {
+  font-size: 1rem;
+  font-family: inherit;
+  border-radius: 8px;
+  border: 1.8px solid var(--border-color);
+  padding: 0.6rem 0.85rem;
+  transition: all 0.3s ease;
+  outline-offset: 2px;
+  color: var(--text-color);
+}
+
+button {
+  background-color: var(--button-bg);
+  border-color: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+  margin-top: 0.4rem;
+  box-shadow: 0 3px 6px rgba(59, 130, 246, 0.4);
+}
+
+button:hover,
+button:focus {
+  background-color: var(--button-hover-bg);
+  border-color: var(--button-hover-border);
+  outline: none;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.6);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--header-bg);
+  box-shadow: 0 0 8px #93C5FD;
+  outline: none;
+}
+
+input, select, textarea {
+  width: 100%;
+  margin-top: 0.4rem;
+  margin-bottom: 1.2rem;
+  box-sizing: border-box;
+  background: var(--input-bg);
+  color: var(--input-text);
+}
+
+/* Planner styles */
+#planner-dropzone {
+  border: 2.5px dashed var(--header-bg);
+  padding: 1rem;
+  min-height: 120px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--dropzone-bg);
+  border-radius: 12px;
+}
+
+.planner-item {
+  position: relative;
+  background: var(--planner-item-bg);
+  color: var(--planner-item-text);
+  border-radius: 18px;
+  padding: 0.6rem 1.2rem;
+  margin: 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+  cursor: grab;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+.planner-item .remove-btn {
+  background: var(--planner-remove-bg);
+  border: none;
+  color: white;
+  font-weight: 700;
+  margin-left: 0.8rem;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  line-height: 22px;
+  cursor: pointer;
+  flex-shrink: 0;
+  text-align: center;
+  padding: 0;
+  font-size: 16px;
+  user-select: none;
+  box-shadow: 0 0 6px rgba(249, 115, 22, 0.8);
+}
+
+.planner-item .remove-btn:hover {
+  background: var(--planner-remove-hover);
+  box-shadow: 0 0 10px rgba(194, 65, 12, 0.9);
+}
+
+/* Mood buttons */
+.mood-button {
+  font-size: 2.3rem;
+  padding: 0.65rem 0.9rem;
+  margin: 0.3rem;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: var(--mood-btn-bg);
+  user-select: none;
+  transition: all 0.3s ease;
+  font-weight: 700;
+  color: var(--mood-btn-text);
+}
+
+.mood-button:hover,
+.mood-button:focus {
+  border-color: var(--header-bg);
+  background: var(--mood-btn-hover-bg);
+  outline: none;
+}
+
+.star-btn {
+  cursor: pointer;
+  margin-left: 8px;
+  color: var(--star-color);
+  font-size: 1.5rem;
+  user-select: none;
+  border: none;
+  background: none;
+  padding: 0;
+  transition: color 0.3s ease;
+}
+
+.star-btn:hover {
+  color: var(--star-hover);
+}
+
+.starred {
+  color: #EA580C !important;
+}
+
+textarea {
+  min-height: 140px;
+  resize: vertical;
+  padding: 0.7rem 0.9rem;
+  border: 1.8px solid var(--border-color);
+  transition: border-color 0.3s ease;
+  background: var(--textarea-bg);
+  color: var(--textarea-text);
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+textarea:focus {
+  border-color: var(--header-bg);
+  box-shadow: 0 0 8px #93C5FD;
+  outline: none;
+}
+
+/* Audio */
+audio {
+  width: 100%;
+  margin-top: 0.6rem;
+  outline: none;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
+  background: var(--audio-bg);
+}
+
+/* Navigation buttons */
+nav button {
+  flex: 1 1 130px;
+  background: var(--nav-btn-bg);
+  color: var(--nav-btn-text);
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.8rem 1.1rem;
+  border: none;
+  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.3);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+nav button.active {
+  background-color: var(--nav-btn-active-bg);
+  color: var(--nav-btn-active-text);
+  box-shadow: 0 6px 14px rgba(249, 115, 22, 0.6);
+}
+
+nav button:hover:not(.active),
+nav button:focus:not(.active) {
+  background-color: #C2410C;
+  color: white;
+  box-shadow: 0 6px 14px rgba(194, 65, 12, 0.6);
+  outline: none;
+}
+
+/* Dropdowns, resources, reset buttons, switches, etc. use similar pattern... */
+/* Use var(--bg-color), var(--text-color), var(--button-bg), var(--button-text), etc. */
+
+#planner-dropzone {
+  border: 2.5px dashed #3B82F6;
+  padding: 1rem;
+  min-height: 120px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: #EFF6FF;
+  border-radius: 12px;
+}
+
+.planner-item {
+  position: relative;
+  background: #3B82F6;
+  color: white;
+  border-radius: 18px;
+  padding: 0.6rem 1.2rem;
+  margin: 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+  cursor: grab;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+.planner-item .remove-btn {
+  background: #F97316; /* Coral */
+  border: none;
+  color: white;
+  font-weight: 700;
+  margin-left: 0.8rem;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  line-height: 22px;
+  cursor: pointer;
+  flex-shrink: 0;
+  text-align: center;
+  padding: 0;
+  font-size: 16px;
+  user-select: none;
+  box-shadow: 0 0 6px rgba(249, 115, 22, 0.8);
+}
+
+.planner-item .remove-btn:hover {
+  background: #C2410C;
+  box-shadow: 0 0 10px rgba(194, 65, 12, 0.9);
+}
+
+.mood-button {
+  font-size: 2.3rem;
+  padding: 0.65rem 0.9rem;
+  margin: 0.3rem;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: #E0E7FF;
+  user-select: none;
+  transition: all 0.3s ease;
+  font-weight: 700;
+  color: #1E40AF;
+}
+
+.mood-button:hover,
+.mood-button:focus {
+  border-color: #3B82F6;
+  background: #BFDBFE;
+  outline: none;
+}
+
+.star-btn {
+  cursor: pointer;
+  margin-left: 8px;
+  color: #F97316;
+  font-size: 1.5rem;
+  user-select: none;
+  border: none;
+  background: none;
+  padding: 0;
+  transition: color 0.3s ease;
+}
+
+.star-btn:hover {
+  color: #C2410C;
+}
+
+.starred {
+  color: #EA580C !important;
+}
+
+textarea {
+  min-height: 140px;
+  resize: vertical;
+  padding: 0.7rem 0.9rem;
+  border: 1.8px solid #D1D5DB;
+  transition: border-color 0.3s ease;
+  background: #F9FAFB;
+  color: #374151;
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+textarea:focus {
+  border-color: #3B82F6;
+  box-shadow: 0 0 8px #93C5FD;
+  outline: none;
+}
+
+audio {
+  width: 100%;
+  margin-top: 0.6rem;
+  outline: none;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
+  background: white;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  #planner-dropzone {
+    flex-direction: column;
+    min-height: 150px;
+  }
+  .draggable {
+    width: 100%;
+    cursor: grab;
+  }
+  nav {
+    gap: 0.7rem;
+  }
+}
+
+/* Dropdown styles */
+.dropdown-content div {
+  padding: 7px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #E5E7EB;
+  border-radius: 6px;
+  transition: background-color 0.25s ease;
+  background: white;
+}
+
+.dropdown-content div:hover {
+  background-color: #DBEAFE;
+}
+
+/* Resource Links */
+.resource-link {
+  display: block;
+  margin: 0.5rem 0;
+  color: #3B82F6;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.resource-link:hover,
+.resource-link:focus {
+  text-decoration: underline;
+  color: #2563EB;
+}
+
+/* Reset mood history button */
+#reset-mood-history {
+  background: #F97316;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 3px 8px rgba(249, 115, 22, 0.7);
+}
+
+#reset-mood-history:hover {
+  background: #C2410C;
+  box-shadow: 0 4px 12px rgba(194, 65, 12, 0.9);
+}
+
+/* Hide phrase lists initially */
+#want-list, #need-list, #feel-list {
+  display: none;
+}
+
+/* Hide app sections by default */
+#user-content, #app-section, #welcome-section {
+  display: none;
+}
+/* Hide caregiver notes section for non-caregivers */
+[data-role="caregiver"] {
+  display: none;
+}
+
+/* Clear Favorite Phrases button style */
+#clear-favorites-btn {
+  background: #F97316;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 8px rgba(249, 115, 22, 0.7);
+}
+
+#clear-favorites-btn:hover {
+  background: #C2410C;
+  box-shadow: 0 4px 12px rgba(194, 65, 12, 0.9);
+}
+
+/* Dropdown buttons */
+.dropdown-btn {
+  background: #3B82F6;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.6);
+}
+
+.dropdown-btn:hover {
+  background: #2563EB;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.8);
+}
+
+pre#mood-history {
+  max-height: none !important;
+  overflow: visible !important;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}/* Toggle switch styling */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Light/Dark theme styles */
+body.light-theme {
+  background-color: #ec9f6c;
+  color: #000000;
+}
+
+body.dark-theme {
+  background-color: #5074c0;
+  color: #8992be;
+}
+
+#planner, #moodList{
+  transition: background-color 0.3s, color 0.3s;
+}
+</style>
+</head>
+
+<body class="light-theme">
+  <header class="app-header">
+    <div class="header-inner">
+      <img src="/Users/angelinabrunelle1/Downloads/E (2).png" alt="Communication icon" class="logo" />
+      <div id="themeToggleContainer" class="theme-toggle" aria-hidden="false">
+        <label class="switch" title="Toggle theme">
+          <input type="checkbox" id="themeToggle" aria-label="Toggle theme">
+          <span class="slider round"></span>
+        </label>
+        <span id="themeLabel">Light Mode</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Login simulation -->
+    <section id="login-section">
+      <h2>Login or Create Account</h2>
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" placeholder="Enter your email" required />
+
+  <label for="password">Password:</label>
+  <input type="password" id="password" placeholder="Enter your password" required />
+
+  <label for="role-select">Select Role:</label>
+  <select id="role-select">
+    <option value="" disabled selected>Select role</option>
+    <option value="user">User</option>
+    <option value="caregiver">Caregiver</option>
+  </select>
+
+  <button id="signup-btn">Create Account</button>
+  <button id="login-btn">Login</button>
+</section>
+        
+<section id="user-content" style="display:none;">
+  <h2>Welcome to Easy Speech AAC!                  <button id="logout-btn">Logout</button> </h2>
+  <p>Hi<span id="user-name-display"></span>! You are logged in as a <span id="user-role-display"></span>! Log out to change roles. </p>
+
+  <p> We're happy you're here. This app is designed to make communication and mood tracking simple!</p>
+</section>
+    <!-- App interface -->
+    <section id="app-section" style="display:none;">
+<nav>
+  <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+  <button class="tab-btn" data-tab="planner">Daily Planner</button>
+  <button class="tab-btn" data-tab="phrases">My Phrases</button>
+  <button class="tab-btn" data-tab="mood">Mood Tracker/Analytics</button>
+  <button class="tab-btn" data-tab="calming-audio">Calming Audios</button>
+  <button class="tab-btn" data-tab="notes" data-role="caregiver">Caregiver Notes</button> 
+  <button class="tab-btn" data-tab="resources">Resources & Donate</button>
+  <button class="tab-btn" data-tab="contact">Contact Us</button>
+</nav>
+
+<!-- Caregiver Notes Section -->
+<section id="notes" class="tab-content" style="display:none; margin-top: 2rem;">
+  <h2>Caregiver Notes</h2>
+  <textarea id="caregiver-notes" placeholder="Write observations here..."></textarea>
+  <button id="save-notes">Save Notes</button>
+  <h3>Previous Notes</h3>
+  <div id="previous-notes" style="background: #f4f4f4; padding: 10px; border-radius: 6px; max-height: 200px; overflow-y: auto; white-space: pre-wrap; border: 1px solid #ccc;"></div>
+  <!-- Quick Tips for Caregiving Notes -->
+<div class="quick-tips" style="background-color:#e2e5e8; padding:12px 20px; border-radius:8px; margin:16px 0; font-family:sans-serif; font-size:14px;">
+  <strong>Quick Tips ❓</strong>
+  <ul style="margin:8px 0 0 16px; padding:0; list-style-type:disc;">
+    <li>Use the “Add Note” button to log a new caregiving entry.</li>
+    <li>Click the delete icons next to a note to remove it from notes history.</li>
+    <li>Jot down observations or patterns in behavior.</li>
+  </ul>
+</div>
+</section>
+
+<!-- Welcome section -->
+<section id="welcome-section" style="display:none;">
+
+      <!-- Dashboard -->
+      <section id="dashboard" class="tab-content">
+
+        <ul style="list-style: none; padding: 0; font-size: 1.1rem; line-height: 1.6;">
+          <li>⭐ Express how you feel by using our simple interface.</li>
+          <li>⭐ Use the drag-and-drop planner to create easy schedules.</li>
+          <li>⭐ Tap phrases to speak your needs.</li>
+          <li>⭐ Relax with calming music when overwhelmed.</li>
+          <li>⭐ Caregivers can track mood analytics and take helpful notes.</li>
+        </ul>
+
+    <!-- Mission statement -->
+        <section>
+          <h2>Our Mission</h2>
+          <p>
+              Easy Speech AAC is a free, nonprofit tool developed through research and personal experience to empower individuals with communication challenges. Unlike many costly alternatives, our tool offers support by enabling users to express their needs, monitor emotions, and manage routines effectively. I am dedicated to enhancing the quality of life for both caregivers and users, while also striving to raise funds for autism and disability-related charities.
+          </p>
+        </section>
+            <!-- Role Switcher inside the app -->
+  <div id="role-container" style="margin: 1rem 0;">
+    <label for="role-switcher">Switch Role: </label>
+      <select id="role-switcher">
+      <option value="user">User</option>
+      <option value="caregiver">Caregiver</option>
+    </select>
+  </div>
+    </section>
+</section>
+
+<!-- Calming Audio Tab -->
+<section id="calming-audio" class="tab-content" style="display:none; margin-top: 2rem;">
+  <h2>🎧 Calming Audio</h2>
+
+  <!-- Poco by Roo Walker -->
+  <div style="margin-bottom:1.5rem;">
+    <audio controls>
+      <source src="file:///Users/angelinabrunelle1/Downloads/poco-roo-walker-main-version-02-22-9624.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <p style="font-size: 0.9rem; color: #868080; margin-top: 0.5rem;">
+      Music: <a href="https://uppbeat.io/t/roo-walker/poco" target="_blank" rel="noopener noreferrer" style="color:#4a90e2;">Poco by Roo Walker</a> from Uppbeat<br />
+      License code: <strong>ORMZGL9CGL0BG0BK</strong>
+    </p>
+  </div>
+
+  <!-- Winter Storm by Brock Hewitt -->
+  <div style="margin-bottom:1.5rem;">
+    <audio controls>
+      <source src="file:///Users/angelinabrunelle1/Downloads/winter-storm-brock-hewitt-stories-in-sound-main-version-23614-03-54.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <p style="font-size: 0.9rem; color: #868080; margin-top: 0.5rem;">
+      Music: <a href="https://uppbeat.io/t/brock-hewitt-stories-in-sound/winter-storm" target="_blank" rel="noopener noreferrer" style="color:#4a90e2;">Winter Storm by Brock Hewitt</a> from Uppbeat<br />
+      License code: <strong>EUHZFMICI1RAV5BG</strong>
+    </p>
+  </div>
+  <!-- Quick Tips Section -->
+<div class="quick-tips" style="background-color:#e2e5e8; padding:12px 20px; border-radius:8px; margin:16px 0; font-family:sans-serif; font-size:14px;">
+  <strong>Quick Tips ❓</strong>
+  <ul style="margin:8px 0 0 16px; padding:0; list-style-type:disc;">
+    <li>Scroll up and down to discover new music.</li>
+    <li>Click pause and play buttons to listen to whichever song you please.</li>
+    <li>Change the playback speed or slide the volume control to adjust your listening experience.</li>
+  </ul>
+</div>
+</section>
+
+<!-- Planner Section -->
+<section id="planner" class="tab-content" style="display:none;">
+  <h2>📅 Daily Planner</h2>
+
+  <!-- Current Day -->
+  <div id="currentDay" style="font-weight: bold; margin-bottom: 1rem;"></div>
+
+  <!-- Daily Streak -->
+  <div id="streakDisplay" style="margin: 0.5rem 0; font-weight: bold;">
+    🔥 Streak: 1 day
+  </div>
+
+  <!-- Activity Input -->
+  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+    <button id="emojiBtn" title="Add Emoji">😀</button>
+    <input type="text" id="customActivityInput" placeholder="Add your own activity (e.g. 🎨 Drawing)" />
+    <button id="addActivityBtn" disabled>➕ Add Activity</button>
+  </div>
+
+  <!-- Emoji Picker -->
+  <div id="emojiPicker" 
+       style="display: none; 
+              border: 1px solid #ccc; 
+              padding: 5px; 
+              background: white; 
+              position: absolute; 
+              max-width: 200px; 
+              max-height: 120px; 
+              overflow-y: auto; 
+              border-radius: 6px; 
+              box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
+              z-index: 100;">
+  </div>
+
+  <!-- Main Columns: Activities + Schedule -->
+  <div style="display: flex; gap: 40px; margin-top: 1rem;">
+    
+    <!-- Activities Column -->
+    <div style="flex: 1;">
+      <h3>🧲 Activities</h3>
+      <ul id="activityList">
+        <li draggable="true" class="draggable">🪥 Brush Teeth</li>
+        <li draggable="true" class="draggable">🍳 Eat Breakfast</li>
+        <li draggable="true" class="draggable">🏃 Exercise</li>
+        <li draggable="true" class="draggable">📚 Study</li>
+        <li draggable="true" class="draggable">🛌 Rest</li>
+      </ul>
+    </div>
+  <!-- Quick Tips Underneath Columns -->
+  <div class="quick-tips" style="
+      background-color:#e2e5e8; 
+      padding:12px 20px; 
+      border-radius:8px; 
+      margin:16px 0 32px 0; 
+      font-family:sans-serif; 
+      font-size:14px;
+      min-height: 180px;
+  ">
+    <strong>Quick Tips ❓</strong>
+    <ul style="margin:8px 0 0 16px; padding:0; list-style-type:disc;">
+      <li>Drag and drop activities to schedule your day.</li>
+      <li>Click add activity to save custom activity.</li>
+      <li>Click checkmark to confirm completion (10pts).</li>
+      <li>Undo checkmark by clicking it again (if not completed).</li>
+      <li>Click X to remove activity or clear schedule to start fresh.</li>
+      <li>Reach a level-up threshold by completing activities.</li>
+      <li>Print your schedule to keep track of your activities.</li>
+    </ul>
+  </div>
+</div>
+
+    <!-- Schedule Column -->
+    <div style="flex: 1;">
+      <h3>🗓️ Schedule</h3>
+      <ul id="schedule" 
+          style="min-height: 200px; 
+                 border: 2px dashed #4a90e2; 
+                 padding: 10px; 
+                 border-radius: 6px;">
+      </ul>
+
+<!-- Action Buttons -->
+<div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 10px;">
+  <button id="clearScheduleBtn" 
+          style="width: 100%; 
+                 padding: 0.8rem 1.2rem; 
+                 border-radius: 8px; 
+                 border: none; 
+                 background-color: #ef4444; 
+                 color: white; 
+                 font-weight: 600; 
+                 cursor: pointer; 
+                 box-shadow: 0 3px 8px rgba(239, 68, 68, 0.5);">
+    🧹 Clear Schedule
+  </button>
+
+  <button id="print-schedule-btn" 
+          style="width: 100%; 
+                 padding: 0.8rem 1.2rem; 
+                 border-radius: 8px; 
+                 border: none; 
+                 background-color: #3B82F6; 
+                 color: white; 
+                 font-weight: 600; 
+                 cursor: pointer; 
+                 box-shadow: 0 3px 8px rgba(59, 130, 246, 0.6);">
+    🖨️ Print Schedule
+  </button>
+</div>
+
+  <!-- Gamification Section -->
+  <div id="gamification" style="border: 2px solid #4CAF50; padding: 12px; border-radius: 10px; margin-top: 20px; background: #dce3dc;">
+    <h2 style="margin: 0 0 10px 0; color: #4CAF50;">🏆 My Progress</h2>
+
+    <!-- Progress Bar -->
+    <div id="progressBarContainer" style="background: #e0f7fa; border-radius: 18px; height: 60px; margin: 24px auto 18px auto; box-shadow: 0 2px 12px rgba(76, 175, 80, 0.13); overflow: hidden; position: relative; max-width: 420px; min-width: 220px; display: flex; align-items: center;">
+      <div id="progressBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #63c3ae 60%, #81bbc7 100%); border-radius: 18px; transition: width 0.5s cubic-bezier(.4,2,.3,1); display: flex; align-items: center; justify-content: flex-end; font-weight: bold; color: #e8e8e8; font-size: 1.35em; box-shadow: 0 2px 8px rgba(76, 175, 80, 0.18); padding-right: 22px; min-width: 40px;">
+        <span id="progressBarText" style="text-shadow: 0 1px 2px #388e3c;">🌱</span>
+      </div>
+    </div>
+
+    <!-- Points & Level -->
+    <div id="pointsDisplay" style="font-size: 1.2em; margin-bottom: 6px;">⭐ Points: 0</div>
+    <div id="levelDisplay" style="font-size: 1.2em; margin-bottom: 10px;">🎯 Level: 1</div>
+
+    <!-- Badges -->
+    <div id="badgeSection">
+      <h3 style="margin: 0 0 6px 0; font-size: 1em; color: #555;">Badges Earned:</h3>
+      <div id="badgeList" style="display: flex; flex-direction: column;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Mood Tracker -->
+<section id="mood" class="tab-content" style="display:none;">
+  <h2>Mood Tracker</h2>
+  <p>Tap your current mood:</p>
+  <div id="mood-buttons">
+    <button class="mood-button" data-mood="Happy">😊 Happy</button>
+    <button class="mood-button" data-mood="Sad">😢 Sad</button>
+    <button class="mood-button" data-mood="Angry">😡 Angry</button>
+    <button class="mood-button" data-mood="Anxious">😰 Anxious</button>
+    <button class="mood-button" data-mood="Calm">😌 Calm</button>
+    <button class="mood-button" data-mood="Tired">😴 Tired</button>
+  </div>
+
+  <h3>Mood Tips</h3>
+  <p id="mood-tip">Select a mood above to get tips.</p>
+
+  <h3>Mood History</h3>
+  <pre id="mood-history" style="background:#ced4dc; padding: 0.5rem; border-radius:4px; max-height:150px; overflow:auto;"></pre>
+  <button id="reset-mood-history">Reset Mood History</button>
+
+  <!-- Mood Analytics Chart -->
+  <h2>Mood Analytics</h2>
+  <p>Refresh the page to see updated mood analytics</p>
+  <canvas id="moodChart" style="max-width: 700px; max-height: 400px;"></canvas>
+
+  <!-- Mood Analytics Print -->
+  <button id="print-mood-pdf" style="
+    background:#3B82F6; 
+    color:white; 
+    border:none; 
+    padding:0.6rem 1.1rem; 
+    border-radius:8px; 
+    cursor:pointer; 
+    font-weight:600; 
+    margin-top: 1rem;
+    box-shadow: 0 3px 8px rgba(59, 130, 246, 0.6);
+  ">🖨️ Print Mood</button>
+</section>
+
+<!-- Include Chart.js once -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+      
+<!-- Phrases Section -->
+<section id="phrases" class="tab-content" style="display:none;">
+  <h2>⭐ Favorite Phrases</h2>
+  <div id="favorites-columns" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+    <div style="background:#f9f9f9; padding:0.5rem; border-radius:6px; min-height:60px;">
+      <h3 style="text-align:center;">Want</h3>
+      <ul id="favorites-want" class="favorites-column" style="list-style:none; padding-left:0;"></ul>
+    </div>
+    <div style="background:#f9f9f9; padding:0.5rem; border-radius:6px; min-height:60px;">
+      <h3 style="text-align:center;">Need</h3>
+      <ul id="favorites-need" class="favorites-column" style="list-style:none; padding-left:0;"></ul>
+    </div>
+    <div style="background:#f9f9f9; padding:0.5rem; border-radius:6px; min-height:60px;">
+      <h3 style="text-align:center;">Feel</h3>
+      <ul id="favorites-feel" class="favorites-column" style="list-style:none; padding-left:0;"></ul>
+    </div>
+  </div>
+
+ <button id="clear-favorites-btn" style="background:#e53e3e; color:white; border:none; padding:0.4rem 0.8rem; border-radius:4px; cursor:pointer; margin-bottom:1rem;">
+    Clear Favorite Phrases
+  </button>
+
+  <!-- Category Selector -->
+  <h2 for="phrase-category-select" style="font-weight: bold; display:block; margin-top: 1rem;">Choose Phrase Category</h2>
+      <p>Add phrases! Users can choose their categories and type or tap words under the drop down menu to speak! </p>
+  <select id="phrase-category-select" onchange="switchCategory(this.value)" style="margin-bottom:1rem; padding:0.5rem; border-radius:6px; border:1px solid #cccccc;">
+    <option value="want">Want Phrases</option>
+    <option value="need">Need Phrases</option>
+    <option value="feel">Feel Phrases</option>
+  </select>
+
+    <!-- Example Category Card -->
+    <div class="phrase-card" id="want-section" style="background:#f0f4f8; padding:1rem; border-radius:8px;">
+      <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+        <input id="want-input" placeholder="Add a 'want' phrase" style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+        <select id="want-sort" style="padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+          <option value="az">A–Z</option>
+          <option value="za">Z–A</option>
+          <option value="usage">Most Used</option>
+        </select>
+        <button id="want-add-btn" style="padding:0.5rem 1rem; border-radius:6px; border:none; background:#3B82F6; color:white; cursor:pointer;">Add</button>
+      </div>
+
+      <!-- Collapsible List -->
+      <div id="want-dropdown-content" style="display:none; max-height:150px; overflow-y:auto; margin-top:4px; padding:4px; border:1px solid #ccc; border-radius:6px; background:white;"></div>
+    </div>
+
+    <!-- Repeat for Need -->
+    <div class="phrase-card" id="need-section" style="display:none; background:#f0f4f8; padding:1rem; border-radius:8px;">
+      <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+        <input id="need-input" placeholder="Add a 'need' phrase" style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+        <select id="need-sort" style="padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+          <option value="az">A–Z</option>
+          <option value="za">Z–A</option>
+          <option value="usage">Most Used</option>
+        </select>
+        <button id="need-add-btn" style="padding:0.5rem 1rem; border-radius:6px; border:none; background:#3B82F6; color:white; cursor:pointer;">Add</button>
+      </div>
+      <div id="need-dropdown-content" style="display:none; max-height:150px; overflow-y:auto; margin-top:4px; padding:4px; border:1px solid #ccc; border-radius:6px; background:white;"></div>
+    </div>
+
+    <!-- Repeat for Feel -->
+    <div class="phrase-card" id="feel-section" style="display:none; background:#f0f4f8; padding:1rem; border-radius:8px;">
+      <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+        <input id="feel-input" placeholder="Add a 'feel' phrase" style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+        <select id="feel-sort" style="padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+          <option value="az">A–Z</option>
+          <option value="za">Z–A</option>
+          <option value="usage">Most Used</option>
+        </select>
+        <button id="feel-add-btn" style="padding:0.5rem 1rem; border-radius:6px; border:none; background:#3B82F6; color:white; cursor:pointer;">Add</button>
+      </div>
+      <div id="feel-dropdown-content" style="display:none; max-height:150px; overflow-y:auto; margin-top:4px; padding:4px; border:1px solid #ccc; border-radius:6px; background:white;"></div>
+    </div>
+
+  </div>
+<!-- Under add button -->
+<button class="dropdown-btn" id="want-dropdown-btn">▼ Show All Want Phrases</button>
+<div class="dropdown-content" id="want-dropdown-content" style="display:none; border:1px solid #ccc; max-height:150px; overflow-y:auto; margin-top:4px; padding:4px; background:#fff; position:relative; z-index:10;"></div>
+<ul id="want-list"></ul>
+
+<!-- Under add button -->
+<button class="dropdown-btn" id="need-dropdown-btn">▼ Show All Need Phrases</button>
+<div class="dropdown-content" id="need-dropdown-content" style="display:none; border:1px solid #ccc; max-height:150px; overflow-y:auto; margin-top:4px; padding:4px; background:#fff; position:relative; z-index:10;"></div>
+<ul id="need-list"></ul>
+
+<!-- Under add button -->
+<button class="dropdown-btn" id="feel-dropdown-btn">▼ Show All Feel Phrases</button>
+<div class="dropdown-content" id="feel-dropdown-content" style="display:none; border:1px solid #ccc; max-height:150px; overflow-y:auto; margin-top:4px; padding:4px; background:#fff; position:relative; z-index:10;"></div>
+<ul id="feel-list"></ul>
+
+  <!-- Search Section -->
+  <section id="search-section" style="margin-top: 1.5rem;">
+    <h2>Search Phrases</h2>
+    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+      <input type="text" id="search-want" placeholder="Search 'want' phrases" style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+      <input type="text" id="search-need" placeholder="Search 'need' phrases" style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+      <input type="text" id="search-feel" placeholder="Search 'feel' phrases" style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+    </div>
+  </section>
+
+<script>
+function switchCategory(selected) {
+  ['want', 'need', 'feel'].forEach(type => {
+    document.getElementById(type + '-section').style.display = (type === selected) ? 'block' : 'none';
+  });
+}
+</script>
+
+<!-- Quick Tips for Phrases -->
+<div class="quick-tips" style="background-color:#e2e5e8; padding:12px 20px; border-radius:8px; margin:16px 0; font-family:sans-serif; font-size:14px;">
+  <strong>Quick Tips ❓</strong>
+  <ul style="margin:8px 0 0 16px; padding:0; list-style-type:disc;">
+    <li>Type a word or phrase in the input box and press add to save word in category.</li>
+    <li>Click on a phrase in the dropdown menu to have it spoken out loud.</li>
+    <li>Use the star icon to favorite phrases for quick access.</li>
+    <li>Use the X icon to remove phrases.</li>
+    <li>Click clear all favorites to remove all starred terms.</li>
+  </ul>
+</div>
+</section>
+
+<!-- Resources & Donate -->
+<section id="resources" class="tab-content" style="display:none; padding:1rem;">
+  <h2>Resources</h2>
+  <p>Helpful links for caregivers and disability support:</p>
+  <div style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1.5rem;">
+    <a href="https://www.autismspeaks.org" target="_blank" class="resource-link" style="padding:8px 12px; background:#e0f2fe; border-radius:6px; text-decoration:none; color:#1e40af;">
+      Autism Speaks: promoting awareness, advocacy, and research for autism spectrum disorders
+    </a>
+    <a href="https://www.autism-society.org" target="_blank" class="resource-link" style="padding:8px 12px; background:#e0f2fe; border-radius:6px; text-decoration:none; color:#1e40af;">
+      Autism Society: offers support to improve the lives of people with autism and their families
+    </a>
+    <a href="https://www.understood.org" target="_blank" class="resource-link" style="padding:8px 12px; background:#e0f2fe; border-radius:6px; text-decoration:none; color:#1e40af;">
+      Understood.org: resources and community for people with learning and attention issues
+    </a>
+  </div>
+
+<h2>Donate Today</h2>
+<div id="donation" style="text-align: center; margin: 1.5rem 0;">
+  <p>If you'd like to support autism research and services, please consider donating through my official GoFundMe campaign for the Organization for Autism Research.</p>
+  <a href="https://gofund.me/66f8d46d4" target="_blank" 
+     style="display: inline-block; background-color: #28a745; color: #fff; font-size: 1.2rem; font-weight: bold; padding: 12px 24px; border-radius: 8px; text-decoration: none;">
+    Donate on GoFundMe
+  </a>
+  <p style="margin-top: 1rem; font-size: 0.95rem; color: #8a8989;">
+    100% of donations go directly to the Organization for Autism Research via GoFundMe.
+  </p>
+</div>
+
+</section>
+
+<!-- Contact Section with Direct Link -->
+<section id="contact" class="tab-content" style="display:none;">
+  <h2>Contact!</h2>
+  <p>If you have questions or need support, click the link below to contact me. User reviews and feedback are important!</p>
+  <a href="https://formsubmit.co/el/covedi" target="_blank" style="font-weight: bold; color: #007BFF;">
+    Open Contact Form
+  </a>
+    <!-- Extra Note -->
+  <p style="margin-top: 1rem; font-size: 0.9rem; color: #555;">
+    I do my best to respond within a few days. Thank you for supporting Easy Speech AAC!
+  </p>
+  
+    <!-- Direct Contact -->
+  <p><strong>Email:</strong> <a href="mailto:easyspeechaac@example.com">easyspeechaac@example.com</a></p>
+
+  <!-- Social Links -->
+  <div style="margin: 1rem 0;">
+    <a href="https://github.com/angelinabrunelle" target="_blank" style="margin: 0 10px;">GitHub</a> |
+    <a href="https://www.linkedin.com/in/angelinabrunelle" target="_blank" style="margin: 0 10px;">LinkedIn</a> |
+    <a href="https://www.instagram.com/easyspeechaac" target="_blank" style="margin: 0 10px;">Instagram</a>
+  </div>
+</section>
+
+<!-- Mood of the Week Popup -->
+<div id="moodPopup" style="
+    display:none;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+    z-index:1001;
+    width:300px;
+    text-align:center;
+">
+    <h2>Mood of the Week</h2>
+    <div id="moodSummary" style="margin:15px 0;"></div>
+    <button id="closeMoodPopup" style="
+        padding:8px 16px;
+        border:none;
+        background:#4CAF50;
+        color:white;
+        border-radius:5px;
+        cursor:pointer;
+    ">Close</button>
+</div>
+
+<!-- Overlay -->
+<div id="popupOverlay" style="
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    z-index:1000;
+"></div>
+
+        <!-- Firebase SDKs: PLACE THESE BEFORE YOUR SCRIPT -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+
+window.addEventListener('DOMContentLoaded', () => {
+  let currentUserId = null;
+
+  // --- Firebase Setup ---
+  const firebaseConfig = {
+    apiKey: "AIzaSyC0VUUaKNeAVfaNi0BqdiA2VTof0Me9Au8",
+    authDomain: "easy-speech-aac.firebaseapp.com",
+    projectId: "easy-speech-aac",
+    storageBucket: "easy-speech-aac.appspot.com",
+    messagingSenderId: "2728698117",
+    appId: "1:2728698117:web:5b3db8f5f25bd00756976c"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+// Always sign out on page load (for demo/testing)
+signOut(auth).catch(() => {});
+
+  // --- Cached DOM Elements ---
+  const loginSection = document.getElementById("login-section");
+  const userContent = document.getElementById("user-content");
+  const appSection = document.getElementById("app-section");
+  const welcomeSection = document.getElementById("welcome-section");
+  const userRoleDisplay = document.getElementById("user-role-display");
+  const userNameDisplay = document.getElementById("user-name-display");
+
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const roleSelect = document.getElementById("role-select");
+  const signupBtn = document.getElementById("signup-btn");
+  const loginBtn = document.getElementById("login-btn");
+  const logoutBtn = document.getElementById("logout-btn");
+
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  const phraseTypes = ["want", "need", "feel"];
+  const favoritesListElem = document.getElementById("favorites-list");
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+
+// --- Tab click handling ---
+function setupTabs() {
+  const tabButtons = document.querySelectorAll('button[data-tab]');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+      // Hide all contents
+      tabContents.forEach(c => (c.style.display = 'none'));
+      tabButtons.forEach(b => b.classList.remove('active'));
+
+      // Show selected
+      const target = document.getElementById(btn.dataset.tab);
+      if (target) target.style.display = 'block';
+      btn.classList.add('active');
+    });
+  });
+}
+
+// --- Auth state handling ---
+onAuthStateChanged(auth, user => {
+  if (user) {
+    currentUserId = user.uid;
+    const role = localStorage.getItem(`${currentUserId}_userRole`) || "user";
+    
+    userRoleDisplay.textContent = role;
+    
+    loginSection.style.display = 'none';
+    userContent.style.display = 'block';
+    appSection.style.display = 'block';
+    welcomeSection.style.display = 'block';
+
+    setupTabs();
+  } else {
+    currentUserId = null;
+    loginSection.style.display = 'block';
+    userContent.style.display = 'none';
+    appSection.style.display = 'none';
+    welcomeSection.style.display = 'none';
+  }
+});
+
+// Load saved theme on page load
+let savedTheme = localStorage.getItem(`theme_${currentUserId}`) || 'light';
+document.body.classList.add(`${savedTheme}-theme`);
+themeToggle.checked = savedTheme === 'dark';
+themeLabel.textContent = savedTheme === 'dark' ? 'Dark Mode' : 'Light Mode';
+
+// Toggle theme function
+themeToggle.addEventListener('change', () => {
+    if (themeToggle.checked) {
+        document.body.classList.remove('light-theme');
+        document.body.classList.add('dark-theme');
+        themeLabel.textContent = 'Dark Mode';
+        localStorage.setItem(`theme_${currentUserId}`, 'dark');
+    } else {
+        document.body.classList.remove('dark-theme');
+        document.body.classList.add('light-theme');
+        themeLabel.textContent = 'Light Mode';
+        localStorage.setItem(`theme_${currentUserId}`, 'light');
+    }
+});
+
+//user-specific variable
+let points = 0;
+let exp = 0;
+let level = 1;
+
+// Helper functions to save/load user-specific data in localStorage
+function getUserKey(key) {
+  const currentUserId = 'defaultUser';
+  return `${currentUserId}_${key}`;
+}
+
+function saveUserData(key, data) {
+  if (!currentUserId) return;
+  localStorage.setItem(`${currentUserId}_${key}`, JSON.stringify(data));
+}
+
+function loadUserData(key) {
+  if (!currentUserId) return null;
+  const data = localStorage.getItem(`${currentUserId}_${key}`);
+  return data ? JSON.parse(data) : null;
+}
+
+function saveUserRole(role) {
+  if (!currentUserId) return;
+  localStorage.setItem(`${currentUserId}_userRole`, role);
+}
+
+function loadUserRole() {
+  if (!currentUserId) return 'user';
+  return localStorage.getItem(`${currentUserId}_userRole`) || 'user';
+}
+
+function removeUserRole() {
+  if (!currentUserId) return;
+  localStorage.removeItem(`${currentUserId}_userRole`);
+}
+
+// Speech synthesis helper
+  function speakText(text) {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert('Sorry, your browser does not support speech synthesis.');
+    }
+  }
+
+// --- Daily Streak Feature ---
+let dailyStreak = parseInt(localStorage.getItem(`dailyStreak_${currentUserId}`)) || 0;
+let lastStreakDate = localStorage.getItem(`lastStreakDate_${currentUserId}`) || null;
+
+function updateStreakDisplay() {
+    const streakDisplay = document.getElementById("streakDisplay");
+    if (streakDisplay) {
+        streakDisplay.textContent = `🔥 Streak: ${dailyStreak} days`;
+    }
+}
+
+// Call this whenever a task is completed via the checkmark
+function updateDailyStreak() {
+    if (!currentUserId) return;
+    const today = new Date().toDateString();
+    let lastSavedDate = localStorage.getItem(`lastStreakDate_${currentUserId}`);
+    let currentStreak = parseInt(localStorage.getItem(`dailyStreak_${currentUserId}`)) || 0;
+
+    let streakChanged = false;
+
+    // If no streak started yet
+    if (!lastSavedDate) {
+        currentStreak = 1;
+        lastSavedDate = today;
+        streakChanged = true;
+    } else if (lastSavedDate !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        if (lastSavedDate === yesterday.toDateString()) {
+            currentStreak++; // continue streak
+        } else {
+            currentStreak = 1; // reset streak
+        }
+
+        lastSavedDate = today;
+        streakChanged = true;
+    }
+
+    // Save to localStorage
+    localStorage.setItem(`dailyStreak_${currentUserId}`, currentStreak);
+    localStorage.setItem(`lastStreakDate_${currentUserId}`, lastSavedDate);
+
+    // Update globals
+    dailyStreak = currentStreak;
+    lastStreakDate = lastSavedDate;
+
+    updateStreakDisplay();
+
+    if (streakChanged) {
+        alert(`🔥 Daily streak: ${currentStreak} days!`);
+    }
+}
+
+// Load streak UI on page load
+window.addEventListener("DOMContentLoaded", () => {
+    dailyStreak = parseInt(localStorage.getItem(`dailyStreak_${currentUserId}`)) || 0;
+    lastStreakDate = localStorage.getItem(`lastStreakDate_${currentUserId}`) || null;
+    updateStreakDisplay();
+});
+
+// --- Load gamification for current user ---
+function loadGamification() {
+    if (!currentUserId) return;
+    points = parseInt(localStorage.getItem(`points_${currentUserId}`)) || 0;
+    exp = parseInt(localStorage.getItem(`exp_${currentUserId}`)) || 0;
+    level = parseInt(localStorage.getItem(`level_${currentUserId}`)) || 1;
+
+    updatePointsDisplay();
+    updateLevelDisplay();
+    updateProgressUI();
+
+    // show badges for this user only
+    const badgeNames = {
+        badge7Day: "7-Day Streak",
+        badge1Month: "1-Month Streak",
+        badge3Month: "3-Month Streak",
+        badge6Month: "6-Month Streak",
+        badge12Month: "12-Month Streak"
+    };
+
+    const badgeList = document.getElementById("badgeList");
+    if (badgeList) badgeList.innerHTML = ""; // clear old badges
+
+    Object.keys(badgeNames).forEach(key => {
+        if (localStorage.getItem(`${key}_${currentUserId}`)) {
+            showBadge(badgeNames[key]);
+        }
+    });
+}
+
+// --- Save gamification for current user ---
+function saveGamification() {
+    if (!currentUserId) return;
+    localStorage.setItem(`points_${currentUserId}`, points);
+    localStorage.setItem(`exp_${currentUserId}`, exp);
+    localStorage.setItem(`level_${currentUserId}`, level);
+}
+// --- Progress Bar Logic ---
+function updateProgressBar() {
+  // Level up threshold
+  const requiredExp = 100 * level;
+  const percent = Math.min(100, Math.round((exp / requiredExp) * 100));
+  const progressBar = document.getElementById('progressBar');
+  const progressBarText = document.getElementById('progressBarText');
+  if (progressBar) {
+    progressBar.style.width = percent + '%';
+    // emoji changes based on progress
+    let emoji = "🌱";
+    if (percent >= 100) emoji = "🌸";
+    else if (percent >= 75) emoji = "🌻";
+    else if (percent >= 50) emoji = "🌼";
+    else if (percent >= 25) emoji = "🌿";
+    progressBarText.textContent = `${emoji} ${exp}/${requiredExp}`;
+  }
+}
+
+// --- Update Progress UI ---
+function updateProgressUI() {
+  updatePointsDisplay();
+  updateLevelDisplay();
+  updateProgressBar();
+}
+
+// --- Update progress bar on page load and after login ---
+window.addEventListener("DOMContentLoaded", updateProgressBar);
+
+// --- UI Updates ---
+function updatePointsDisplay() {
+    const pointsDisplay = document.getElementById("pointsDisplay");
+    if (pointsDisplay) pointsDisplay.textContent = `⭐ Points: ${points}`;
+}
+
+function updateLevelDisplay() {
+    const levelDisplay = document.getElementById("levelDisplay");
+    if (levelDisplay) levelDisplay.textContent = `🎯 Level: ${level}`;
+}
+
+// Add points/EXP
+function addPoints(amount = 10) {
+    points += amount;
+    exp += amount;
+    checkLevelUp();
+    saveGamification();
+        updateProgressUI();
+    updatePointsDisplay();
+    updateLevelDisplay();
+    checkBadges();
+}
+
+// Remove points/EXP
+function removePoints(amount = 10) {
+    points = Math.max(0, points - amount);
+    exp = Math.max(0, exp - amount);
+    saveGamification();
+    updatePointsDisplay();
+    updateLevelDisplay();
+        updateProgressUI();
+}
+
+// Level up logic
+function checkLevelUp() {
+    let requiredExp = 100 * level;
+    let leveledUp = false;
+
+    while (exp >= requiredExp) {
+        exp -= requiredExp;
+        level++;
+        leveledUp = true;
+        alert(`🎉 Congrats! You reached Level ${level}!`);
+        requiredExp = 100 * level;
+    }
+
+    if (leveledUp) {
+        saveGamification();      
+        updateLevelDisplay();    
+        updateProgressUI();
+    }
+}
+
+// --- Badge System ---
+function showBadge(badgeName) {
+    const badgeList = document.getElementById("badgeList");
+    if (!badgeList) return;
+    if ([...badgeList.children].some(el => el.textContent.includes(badgeName))) return;
+
+    const badgeElem = document.createElement("div");
+    badgeElem.textContent = `🏅 ${badgeName}`;
+    badgeElem.style.margin = "6px 0";
+    badgeElem.style.fontWeight = "bold";
+    badgeElem.style.color = "#4CAF50";
+    badgeList.appendChild(badgeElem);
+}
+
+function checkBadges() {
+    const streakDays = dailyStreak;
+    const badgeMap = [
+        { key: 'badge7Day', name: '7-Day Streak', days: 7 },
+        { key: 'badge1Month', name: '1-Month Streak', days: 30 },
+        { key: 'badge3Month', name: '3-Month Streak', days: 90 },
+        { key: 'badge6Month', name: '6-Month Streak', days: 180 },
+        { key: 'badge12Month', name: '12-Month Streak', days: 365 }
+    ];
+    badgeMap.forEach(b => {
+        if (!localStorage.getItem(`${b.key}_${currentUserId}`) && streakDays >= b.days) {
+            localStorage.setItem(`${b.key}_${currentUserId}`, true);
+            showBadge(b.name);
+            alert(`🏅 You earned the ${b.name} badge!`);
+        }
+    });
+}
+
+// --- Initialize on Page Load ---
+window.addEventListener("DOMContentLoaded", () => {
+    loadGamification();
+    checkLevelUp(); 
+});
+
+// --- Integrate with Planner Completion ---
+function handleTaskCompletion(li, completed) {
+    if (completed) {
+        addPoints(10);
+        updateDailyStreak();
+        updateProgressUI();
+    } else {
+        removePoints(10);
+        updateProgressUI();
+    }
+}
+
+// --- Helper for localStorage ---
+function loadUserData(key) {
+    const data = localStorage.getItem(`${key}_${currentUserId}`);
+    return data ? JSON.parse(data) : null;
+}
+function refreshUserUI() {
+    loadGamification();
+    updateStreakDisplay();
+}
+// --- Today ---
+function getTodayString() {
+  const d = new Date();
+  return d.toISOString().slice(0, 10); // "YYYY-MM-DD"
+}
+
+document.addEventListener("DOMContentLoaded", applyRolePermissions);
+
+// --- Planner Drag & Drop ---
+const emojiBtn = document.getElementById('emojiBtn');
+const emojiPicker = document.getElementById('emojiPicker');
+const customActivityInput = document.getElementById('customActivityInput');
+const addActivityBtn = document.getElementById('addActivityBtn');
+const activityList = document.getElementById('activityList');  const schedule = document.getElementById('schedule');
+const clearScheduleBtn = document.getElementById('clearScheduleBtn');
+
+  // Emoji picker setup
+  const emojis = [
+    "😀", "😁", "😂", "🤣", "😃", "😄", "😅", "😆",
+    "😉", "😊", "😋", "😎", "😍", "😘", "🥰", "😗",
+    "🤩", "😏", "😔", "😞", "😢", "😭", "😡", "😱",
+    "🎨", "🏫", "🎮", "💻", "🎵", "🧘", "🧼", "🚴", "🚶", "🧹", "🧺", "👕", "💤", "🫖", "📖"
+  ];
+
+  function positionEmojiPicker() {
+    if (!emojiBtn || !emojiPicker) return;
+    const rect = emojiBtn.getBoundingClientRect();
+    emojiPicker.style.top = (rect.bottom + window.scrollY + 5) + 'px';
+    emojiPicker.style.left = (rect.left + window.scrollX) + 'px';
+  }
+
+  function fillEmojiPicker() {
+    if (!emojiPicker) return;
+    emojiPicker.innerHTML = '';
+    emojis.forEach(e => {
+      const span = document.createElement('span');
+      span.textContent = e;
+      span.style.fontSize = '24px';
+      span.style.cursor = 'pointer';
+      span.style.margin = '3px';
+      span.title = e;
+      span.addEventListener('click', () => {
+        insertAtCursor(customActivityInput, e);
+        emojiPicker.style.display = 'none';
+        customActivityInput.focus();
+        addActivityBtn.disabled = customActivityInput.value.trim() === '';
+      });
+      emojiPicker.appendChild(span);
+    });
+  }
+
+  function insertAtCursor(input, textToInsert) {
+    if (!input) return;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const value = input.value;
+    input.value = value.substring(0, start) + textToInsert + value.substring(end);
+    input.selectionStart = input.selectionEnd = start + textToInsert.length;
+  }
+
+  if (emojiBtn && emojiPicker && customActivityInput && addActivityBtn) {
+    emojiBtn.addEventListener('click', () => {
+      if (emojiPicker.style.display === 'none' || emojiPicker.style.display === '') {
+        fillEmojiPicker();
+        positionEmojiPicker();
+        emojiPicker.style.display = 'block';
+      } else {
+        emojiPicker.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!emojiPicker.contains(e.target) && e.target !== emojiBtn) {
+        emojiPicker.style.display = 'none';
+      }
+    });
+  }
+
+  // Add custom activity input
+  if (customActivityInput) {
+    customActivityInput.addEventListener('input', () => {
+      addActivityBtn.disabled = customActivityInput.value.trim() === '';
+    });
+  }
+
+// Add CSS for completed tasks
+const style = document.createElement('style');
+style.textContent = `
+  .completed {
+    text-decoration: line-through;
+    color: #888;
+  }
+`;
+document.head.appendChild(style);
+
+// --- User-specific keys ---
+function plannerKey(key) {
+  return `${currentUserId}_planner_${key}`;
+}
+
+// --- Custom Activities (per user) ---
+function saveCustomActivities(activities) {
+  localStorage.setItem(plannerKey('customActivities'), JSON.stringify(activities));
+}
+function loadCustomActivities() {
+  return JSON.parse(localStorage.getItem(plannerKey('customActivities')) || '[]');
+}
+
+function loadSchedule() {
+  const today = getTodayString();
+  return JSON.parse(localStorage.getItem(plannerKey('schedule_' + today)) || '[]');
+}
+
+// --- Render Activities ---
+function renderCustomActivities() {
+  Array.from(activityList.querySelectorAll('li.custom-activity')).forEach(li => li.remove());
+  const customActivities = loadCustomActivities();
+  customActivities.forEach(text => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    li.setAttribute('draggable', 'true');
+    li.classList.add('draggable', 'custom-activity');
+    li.addEventListener('dragstart', drag);
+    activityList.appendChild(li);
+  });
+}
+
+// --- Add Custom Activity ---
+if (addActivityBtn) {
+  addActivityBtn.addEventListener('click', () => {
+    const text = customActivityInput.value.trim();
+    if (!text) return;
+    let customActivities = loadCustomActivities();
+    if (customActivities.includes(text)) {
+      alert('Activity already exists.');
+      return;
+    }
+    customActivities.push(text);
+    saveCustomActivities(customActivities);
+    renderCustomActivities();
+    customActivityInput.value = "";
+    addActivityBtn.disabled = true;
+  });
+}
+if (customActivityInput) {
+  customActivityInput.addEventListener('input', () => {
+    addActivityBtn.disabled = customActivityInput.value.trim() === '';
+  });
+}
+
+// --- Schedule List Item ---
+function createDraggableListItem(text, completed = false, completedAt = null) {
+  const li = document.createElement('li');
+  li.style.display = 'flex';
+  li.style.alignItems = 'center';
+  li.style.justifyContent = 'space-between';
+
+  // Text span
+  const textSpan = document.createElement('span');
+  textSpan.textContent = text;
+  textSpan.style.flexGrow = '1';
+  textSpan.style.userSelect = 'none';
+  if (completed) textSpan.classList.add('completed');
+  li.appendChild(textSpan);
+
+  // Complete toggle button
+  const completeBtn = document.createElement('button');
+  completeBtn.textContent = completed ? '✅' : '☐';
+  completeBtn.title = completed ? 'Mark as incomplete' : 'Mark as complete';
+  completeBtn.style.marginLeft = '8px';
+  completeBtn.style.cursor = 'pointer';
+
+  completeBtn.onclick = () => {
+    const nowCompleted = !textSpan.classList.contains('completed');
+    if (nowCompleted && confirm(`Did you finish "${text}"?`)) {
+      textSpan.classList.add('completed');
+      completeBtn.textContent = '✅';
+      completeBtn.title = 'Mark as incomplete';
+      li.setAttribute('data-completed-at', Date.now());
+      handleTaskCompletion(li, true);
+    } else if (!nowCompleted) {
+      textSpan.classList.remove('completed');
+      completeBtn.textContent = '☐';
+      completeBtn.title = 'Mark as complete';
+      li.removeAttribute('data-completed-at');
+      handleTaskCompletion(li, false);
+    }
+    saveScheduleToStorage();
+  };
+
+  // Remove button
+  const removeBtn = document.createElement('button');
+  removeBtn.textContent = '❌';
+  removeBtn.style.marginLeft = '8px';
+  removeBtn.style.cursor = 'pointer';
+  removeBtn.onclick = () => {
+    if (confirm(`Are you sure you want this deleted?`)) {
+      li.remove();
+      saveScheduleToStorage();
+    }
+  };
+
+  // Container for buttons
+  const btnContainer = document.createElement('div');
+  btnContainer.style.display = 'flex';
+  btnContainer.appendChild(completeBtn);
+  btnContainer.appendChild(removeBtn);
+
+  li.appendChild(btnContainer);
+
+  // --- DRAGGABLE SCHEDULE REORDER ---
+  li.setAttribute('draggable', 'true');
+  li.addEventListener('dragstart', (e) => {
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', text);
+    e.dataTransfer.setData('from-index', Array.from(schedule.children).indexOf(li));
+  });
+  li.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    li.style.background = '#e0f7fa';
+  });
+  li.addEventListener('dragleave', () => {
+    li.style.background = '';
+  });
+  li.addEventListener('drop', (e) => {
+    e.preventDefault();
+    li.style.background = '';
+    const fromIndex = parseInt(e.dataTransfer.getData('from-index'));
+    const toIndex = Array.from(schedule.children).indexOf(li);
+    if (fromIndex === toIndex) return;
+    const items = Array.from(schedule.children);
+    const moving = items[fromIndex];
+    if (fromIndex < toIndex) {
+      schedule.insertBefore(moving, li.nextSibling);
+    } else {
+      schedule.insertBefore(moving, li);
+    }
+    saveScheduleToStorage();
+  });
+  li.addEventListener('dragend', () => {
+    li.style.background = '';
+  });
+
+  return li;
+}
+// --- Render Schedule ---
+function renderSchedule() {
+  schedule.innerHTML = '';
+  const items = loadSchedule();
+  items.forEach(item => {
+    const li = createDraggableListItem(item.text, item.completed, item.completedAt);
+    schedule.appendChild(li);
+  });
+}
+
+// --- Save/Load Schedule UI ---
+function saveScheduleToStorage() {
+  const items = Array.from(schedule.querySelectorAll('li')).map(li => {
+    const text = li.querySelector('span').textContent.trim();
+    const completed = li.querySelector('span').classList.contains('completed');
+    // Save completedAt if present
+    let completedAt = li.getAttribute('data-completed-at');
+    completedAt = completedAt ? parseInt(completedAt) : null;
+    return completed
+      ? { text, completed, completedAt: completedAt || Date.now() }
+      : { text, completed: false };
+  });
+  saveSchedule(items);
+}
+
+// --- Drag & Drop ---
+function drag(ev) {
+  const phraseText = ev.target.childNodes[0].textContent.trim();
+  ev.dataTransfer.setData('text/plain', phraseText);
+}
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+function drop(ev) {
+  ev.preventDefault();
+  const data = ev.dataTransfer.getData('text/plain');
+  if (!data) return;
+  const li = createDraggableListItem(data, false);
+  schedule.appendChild(li);
+  saveScheduleToStorage();
+}
+
+// --- Clear Schedule ---
+if (clearScheduleBtn) {
+  clearScheduleBtn.addEventListener("click", () => {
+    if (confirm("Are you sure you want to clear your whole schedule?")) {
+      schedule.innerHTML = "";
+      saveSchedule([]);
+    }
+  });
+}
+
+// --- Initialize Activities and Schedule on Login ---
+function initializePlannerUI() {
+  // Make preset activities draggable
+  Array.from(activityList.querySelectorAll('li:not(.custom-activity)')).forEach(li => {
+    li.setAttribute('draggable', 'true');
+    li.classList.add('draggable');
+    li.addEventListener('dragstart', drag);
+  });
+  renderCustomActivities();
+  renderSchedule();
+}
+
+// --- Reset checkmarks daily ---
+function checkAndResetScheduleForToday() {
+  if (!currentUserId) return;
+  const today = getTodayString();
+  const lastSavedKey = plannerKey('schedule_lastDate');
+  const lastSavedDate = localStorage.getItem(lastSavedKey);
+
+  if (lastSavedDate !== today) {
+    // Reset all completed flags for today
+    const items = loadSchedule().map(item => ({ text: item.text, completed: false }));
+    saveSchedule(items);
+    localStorage.setItem(lastSavedKey, today);
+  }
+}
+//save schedule to localStorage
+function saveSchedule(items) {
+  const today = getTodayString();
+  localStorage.setItem(plannerKey('schedule_' + today), JSON.stringify(items));
+}
+
+// --- On login ---
+function onPlannerUserLogin() {
+  checkAndResetScheduleForToday();
+  initializePlannerUI();
+  // Setup drag/drop events
+  if (schedule) {
+    schedule.addEventListener("dragover", allowDrop);
+    schedule.addEventListener("drop", drop);
+  }
+}
+
+// --- On logout, clear planner UI ---
+function onPlannerUserLogout() {
+  schedule.innerHTML = '';
+  Array.from(activityList.querySelectorAll('li.custom-activity')).forEach(li => li.remove());
+}
+
+// Print Schedule Button
+const printScheduleBtn = document.getElementById('print-schedule-btn');
+if (printScheduleBtn) {
+  printScheduleBtn.addEventListener('click', () => {
+    const today = new Date();
+    const options = { weekday: 'long', month: 'long', day: 'numeric' };
+    const formattedDate = today.toLocaleDateString(undefined, options);
+
+    // Get schedule items
+    const items = loadSchedule();
+    let html = `<h2>Schedule for ${formattedDate}</h2>`;
+    if (items.length === 0) {
+      html += '<p>No items scheduled.</p>';
+    } else {
+      html += '<ul style="font-size:1.1em;">';
+      items.forEach(item => {
+        html += `<li style="margin-bottom:8px;">
+          ${item.completed ? '✅ ' : '☐ '}
+          ${item.text}
+        </li>`;
+      });
+      html += '</ul>';
+    }
+
+    // Open print window
+    const printWindow = window.open('', '', 'width=700,height=600');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Print Schedule</title>
+          <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 2rem; color: #374151; }
+            h2 { color: #3B82F6; }
+            ul { list-style: none; padding: 0; }
+            li { margin-bottom: 8px; }
+          </style>
+        </head>
+        <body>
+          ${html}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+      printWindow.print();
+      printWindow.close();
+    }, 500);
+  });
+}
+
+// --- Mood Tracker ---
+  const moodButtons = document.querySelectorAll('.mood-button');
+  const moodTip = document.getElementById('mood-tip');
+  const moodHistoryElem = document.getElementById('mood-history');
+  const resetMoodHistoryBtn = document.getElementById('reset-mood-history');
+
+  const moodTips = {
+    Happy: 'That\'s wonderful! Keep up the good work and continue what you are doing. Try to do something fun and relaxing, focusing on your special interests.',
+    Sad: 'It\'s okay to feel this way. Try coping with fun activities, finding a comfort item, creating a calm environment, try breathing techniques, or talking to someone you trust. You will be okay!',
+    Angry: 'It\'s ok to be mad! Try different techniques to calm down. Create a calm and predictable environment, identify triggers, try breathing techniques, counting to 10, provide safe spaces, and find support!',
+    Anxious: 'Focus on your breath and creating a calm, simple, setting you are used to. Provide sensory support by using fidget toys and take your mind off the triggers. You can also try grounding techniques to help you feel more present.',
+    Calm: 'Enjoy this peaceful moment to relax and let go. Do something peaceful and fun! Sensory objects can also help calm one down and help you recharge.',
+    Tired: 'Take a well-deserved rest. Take a break from the screen and maybe a short nap! You can also listen to calming music or do a quiet activity.',
+  };
+let moodHistory = loadUserData('moodHistory') || [];
+
+function saveMoodHistory() {
+  saveUserData('moodHistory', moodHistory);
+}
+function updateMoodHistory() {
+  moodHistoryElem.textContent = moodHistory.length
+    ? moodHistory.map(e => `${e.timestamp}: ${e.mood}`).join('\n')
+    : 'No mood recorded yet.';
+}
+const moodPopup = document.getElementById('moodPopup');
+const moodSummary = document.getElementById('moodSummary');
+const closeMoodPopup = document.getElementById('closeMoodPopup');
+function showWeeklyMood() {
+    const moodListItems = document.querySelectorAll('#moodList li');
+    if (moodListItems.length === 0) {
+        moodSummary.innerHTML = 'No moods recorded this week!';
+    } else {
+        // Count moods
+        const counts = {};
+        moodListItems.forEach(item => {
+            const mood = item.textContent.trim();
+            counts[mood] = (counts[mood] || 0) + 1;
+        });
+
+        //recurring mood(s)
+        let maxCount = 0;
+        let topMoods = [];
+        for (const mood in counts) {
+            if (counts[mood] > maxCount) {
+                maxCount = counts[mood];
+                topMoods = [mood];
+            } else if (counts[mood] === maxCount) {
+                topMoods.push(mood);
+            }
+        }
+
+        //summary
+        if (topMoods.length === 1) {
+            moodSummary.innerHTML = `Your most common mood this week is <strong>${topMoods[0]}</strong> (${maxCount} times).`;
+        } else {
+            moodSummary.innerHTML = `Your most common moods this week are <strong>${topMoods.join(", ")}</strong> (${maxCount} times each).`;
+        }
+    }
+    moodPopup.style.display = 'block';
+    document.getElementById('popupOverlay').style.display = 'block';
+}
+closeMoodPopup.onclick = () => {
+    moodPopup.style.display = 'none';
+    document.getElementById('popupOverlay').style.display = 'none';
+};
+
+// Check if today is Sunday (0 = Sunday, 6 = Saturday)
+const today = new Date().getDay();
+if (today === 0) {
+    showWeeklyMood();
+}
+
+// --- Mood Analytics Chart ---
+const moods = ['Happy', 'Sad', 'Angry', 'Anxious', 'Calm', 'Tired'];
+const colors = {
+  Happy: '#4caf50',
+  Sad: '#2196f3',
+  Angry: '#f44336',
+  Anxious: '#ff9800',
+  Calm: '#9c27b0',
+  Tired: '#607d8b'
+};
+
+const ctx = document.getElementById('moodChart').getContext('2d');
+
+let moodChart;
+
+function updateMoodChart() {
+  // Count occurrences for each mood
+  const counts = {};
+  moods.forEach(m => counts[m] = 0);
+  moodHistory.forEach(entry => {
+    if (counts.hasOwnProperty(entry.mood)) {
+      counts[entry.mood]++;
+    }
+  });
+
+  const dataCounts = moods.map(m => counts[m]);
+  const backgroundColors = moods.map(m => colors[m]);
+
+  if (moodChart) {
+    // Update existing chart
+    moodChart.data.datasets[0].data = dataCounts;
+    moodChart.update();
+  } else {
+    // Create chart for first time
+    moodChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: moods,
+        datasets: [{
+          label: 'Mood Counts',
+          data: dataCounts,
+          backgroundColor: backgroundColors,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Count' }
+          }
+        },
+        responsive: true,
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+}
+function updateMoodHistory() {
+  if (!moodHistory.length) {
+    moodHistoryElem.innerHTML = 'No mood recorded yet.';
+    return;
+  }
+
+  // Create a list with delete buttons
+  const ul = document.createElement('ul');
+  ul.style.listStyle = 'none';
+  ul.style.paddingLeft = '0';
+
+  moodHistory.forEach((entry, index) => {
+    const li = document.createElement('li');
+    li.style.marginBottom = '6px';
+    li.style.display = 'flex';
+    li.style.justifyContent = 'space-between';
+    li.style.alignItems = 'center';
+
+    // Entry text
+    const textSpan = document.createElement('span');
+    textSpan.textContent = `${entry.timestamp}: ${entry.mood}`;
+    li.appendChild(textSpan);
+
+    // Delete button
+    const delBtn = document.createElement('button');
+    delBtn.textContent = '✖'; 
+    delBtn.title = 'Delete this entry';
+    delBtn.style.background = '#f44336';
+    delBtn.style.color = 'white';
+    delBtn.style.border = 'none';
+    delBtn.style.borderRadius = '4px';
+    delBtn.style.cursor = 'pointer';
+    delBtn.style.padding = '0 6px';
+    delBtn.style.marginLeft = '12px';
+    delBtn.style.fontWeight = 'bold';
+    delBtn.addEventListener('click', () => {
+      moodHistory.splice(index, 1);
+      saveMoodHistory();
+      updateMoodHistory();
+      updateMoodChart();
+    });
+
+    li.appendChild(delBtn);
+    ul.appendChild(li);
+  });
+
+  // Clear previous content and append the list
+  moodHistoryElem.innerHTML = '';
+  moodHistoryElem.appendChild(ul);
+}
+
+// Event listeners on mood buttons
+  if (moodButtons) {
+    moodButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mood = btn.dataset.mood;
+        moodTip.textContent = moodTips[mood] || 'Select a mood above to get tips.';
+        const timestamp = new Date().toLocaleString();
+        moodHistory.push({ mood, timestamp });
+        if (moodHistory.length > 20) moodHistory.shift();
+        saveMoodHistory();
+        updateMoodHistory();
+        updateMoodChart();
+      });
+    });
+  }
+
+  if (resetMoodHistoryBtn) {
+    resetMoodHistoryBtn.addEventListener('click', () => {
+      if (confirm('Clear mood history?')) {
+        moodHistory = [];
+        saveMoodHistory();
+        updateMoodHistory();
+        updateMoodChart();
+        moodTip.textContent = 'Select a mood above to get tips.';
+      }
+    });
+  }
+  updateMoodHistory();
+  updateMoodChart();
+
+// Print Mood Tracker
+document.getElementById('print-mood-pdf').addEventListener('click', () => {
+  const moodSection = document.getElementById('mood');
+  if (!moodSection) return alert('Mood section not found.');
+
+  // Build full mood history text
+  const fullMoodHistoryText = moodHistory.length
+    ? moodHistory.map(e => `${e.timestamp}: ${e.mood}`).join('\n')
+    : 'No mood recorded yet.';
+
+  // Get chart as image
+  const chartCanvas = document.getElementById('moodChart');
+  let chartImgHTML = '';
+  if (chartCanvas) {
+    const chartDataUrl = chartCanvas.toDataURL('image/png');
+    chartImgHTML = `<img src="${chartDataUrl}" style="max-width:100%;height:auto;margin-bottom:1rem;" />`;
+  }
+
+  // New window for printing
+  const printWindow = window.open('', '', 'width=800,height=600');
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Print Mood Tracker</title>
+        <style>
+          body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 1rem;
+            background: white;
+            color: #374151;
+          }
+          h2, h3 {
+            color: #1F2937;
+          }
+          pre#mood-history {
+            background:#e2e8f0; 
+            padding: 0.5rem; 
+            border-radius:4px; 
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 1rem;
+            line-height: 1.4;
+          }
+          img {
+            display: block;
+            margin: 0 auto 1rem auto;
+          }
+        </style>
+      </head>
+      <body>
+        <h2>Mood Analytics</h2>
+        ${chartImgHTML}
+        <h2>Mood History</h2>
+        <pre id="mood-history">${fullMoodHistoryText}</pre>
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+  printWindow.focus();
+
+  setTimeout(() => {
+    printWindow.print();
+    printWindow.close();
+  }, 500);
+});
+
+// --- Phrase Lists & Favorites ---
+// Helper to create user-specific localStorage keys
+function userKey(key) {
+  return `${currentUserId}_${key}`;
+}
+
+// Speak text aloud with prefix
+function speakText(text, type) {
+  if (!window.speechSynthesis) {
+    alert("Speech synthesis not supported.");
+    return;
+  }
+  const prefixMap = {
+    want: 'I want',
+    need: 'I need',
+    feel: 'I feel'
+  };
+  const prefix = prefixMap[type] || '';
+  const utteranceText = prefix ? `${prefix} ${text}` : text;
+  const utterance = new SpeechSynthesisUtterance(utteranceText);
+  window.speechSynthesis.speak(utterance);
+}
+
+// Get favorites
+function getFavorites() {
+  return JSON.parse(localStorage.getItem(userKey('favoritePhrases')) || '[]');
+}
+
+// Save favorites
+function saveFavorites(favs) {
+  localStorage.setItem(userKey('favoritePhrases'), JSON.stringify(favs));
+}
+
+// Load phrases (want, need, feel)
+function loadPhrases(type) {
+  const data = localStorage.getItem(userKey(`${type}Phrases`));
+  if (!data) return [];
+  const arr = JSON.parse(data);
+  // Convert old format (string array) to new format (object array)
+  if (arr.length && typeof arr[0] === 'string') {
+    return arr.map(text => ({ text, usageCount: 0 }));
+  }
+  return arr;
+}
+
+// Save phrases of a given type for current user
+function savePhrases(type, phrases) {
+  localStorage.setItem(userKey(`${type}Phrases`), JSON.stringify(phrases));
+}
+
+// Update star button UI
+function updateStarBtn(btn, isFav) {
+  btn.textContent = isFav ? '★' : '☆';
+  btn.title = isFav ? 'Remove from favorites' : 'Add to favorites';
+  btn.style.color = isFav ? 'gold' : '#ccc';
+  btn.style.fontSize = '1.2rem';
+  btn.style.border = 'none';
+  btn.style.background = 'none';
+  btn.style.cursor = 'pointer';
+  btn.style.userSelect = 'none';
+  btn.style.marginLeft = '8px';
+}
+
+// Create a phrase list item with star and delete buttons
+function createPhraseListItem(phraseObj, type) {
+  const { text, usageCount = 0 } = phraseObj;
+
+  const li = document.createElement('li');
+  li.style.display = 'flex';
+  li.style.alignItems = 'center';
+  li.style.justifyContent = 'space-between';
+  li.style.cursor = 'pointer';
+
+  const phraseSpan = document.createElement('span');
+  phraseSpan.textContent = text;
+  phraseSpan.style.flexGrow = '1';
+  phraseSpan.style.userSelect = 'none';
+
+  phraseSpan.onclick = () => {
+    speakText(text, type);
+
+    // Increment usage count
+    let phrases = loadPhrases(type);
+    const index = phrases.findIndex(p => p.text === text);
+    if (index !== -1) {
+      phrases[index].usageCount = (phrases[index].usageCount || 0) + 1;
+      savePhrases(type, phrases);
+      renderPhraseList(type);
+    }
+  };
+
+  // Star button
+  const starBtn = document.createElement('button');
+  const favorites = getFavorites();
+  const isFav = favorites.some(fav => fav.text === text && fav.type === type);
+  updateStarBtn(starBtn, isFav);
+  starBtn.onclick = (e) => {
+    e.stopPropagation();
+    toggleFavorite(text, type, starBtn);
+  };
+
+  // Delete button
+  const deleteBtn = document.createElement('button');
+  deleteBtn.textContent = '❌';
+  deleteBtn.title = 'Delete phrase';
+  deleteBtn.style.marginLeft = '8px';
+  deleteBtn.onclick = (e) => {
+    e.stopPropagation();
+    if(confirm(`Delete phrase "${text}"?`)) {
+      deletePhrase(text, type, li);
+    }
+  };
+
+  // Container for star and delete buttons side by side
+  const rightContainer = document.createElement('div');
+  rightContainer.style.display = 'flex';
+  rightContainer.appendChild(starBtn);
+  rightContainer.appendChild(deleteBtn);
+
+  li.appendChild(phraseSpan);
+  li.appendChild(rightContainer);
+
+  return li;
+}
+
+// Delete a phrase from list and update storage
+function deletePhrase(text, type, liElement) {
+  let phrases = loadPhrases(type);
+  phrases = phrases.filter(p => p.text !== text);
+  savePhrases(type, phrases);
+  liElement.remove();
+  renderPhraseList(type);
+}
+
+// Add phrase to list
+function addPhrase(type) {
+  const input = document.getElementById(type + '-input');
+  const text = input.value.trim();
+  if (!text) {
+    alert('Please enter a phrase');
+    return;
+  }
+
+  // Load existing phrases
+  let phrases = loadPhrases(type);
+
+  // Prevent duplicates
+  const exists = phrases.some(p => p.text === text);
+  if (exists) {
+    alert('Phrase already exists.');
+    return;
+  }
+
+  phrases.push({ text, usageCount: 0 });
+  savePhrases(type, phrases);
+
+  renderPhraseList(type);
+  input.value = '';
+
+  // --- Instantly update dropdown if open ---
+  const dropdownContent = document.getElementById(`${type}-dropdown-content`);
+  if (dropdownContent && dropdownContent.style.display === 'block') {
+    // Repopulate the dropdown
+    toggleDropdown(type);
+    toggleDropdown(type); 
+  }
+}
+
+// Toggle favorite status
+function toggleFavorite(text, type, starBtn) {
+  let favorites = getFavorites();
+  const index = favorites.findIndex(fav => fav.text === text && fav.type === type);
+  if (index === -1) {
+    favorites.push({ text, type });
+    updateStarBtn(starBtn, true);
+  } else {
+    favorites.splice(index, 1);
+    updateStarBtn(starBtn, false);
+  }
+  saveFavorites(favorites);
+  renderFavorites();
+}
+// Delete a phrase from list and update storage
+function deletePhrase(text, type, liElement) {
+  // Remove from main phrase list
+  let phrases = loadPhrases(type);
+  phrases = phrases.filter(p => p.text !== text);
+  savePhrases(type, phrases);
+
+  // Remove from favorites if present
+  let favorites = getFavorites();
+  const favIndex = favorites.findIndex(fav => fav.text === text && fav.type === type);
+  if (favIndex !== -1) {
+    favorites.splice(favIndex, 1);
+    saveFavorites(favorites);
+    renderFavorites();
+  }
+
+  // Remove the list element and re-render
+  liElement.remove();
+  renderPhraseList(type);
+}
+
+// Render favorites list
+function renderFavorites() {
+  const favorites = getFavorites();
+  const wantList = document.getElementById('favorites-want');
+  const needList = document.getElementById('favorites-need');
+  const feelList = document.getElementById('favorites-feel');
+
+  wantList.innerHTML = '';
+  needList.innerHTML = '';
+  feelList.innerHTML = '';
+
+  if (favorites.length === 0) {
+    ['want', 'need', 'feel'].forEach(type => {
+      const list = document.getElementById('favorites-' + type);
+      const li = document.createElement('li');
+      li.style.color = '#888';
+      li.textContent = 'No favorites yet.';
+      list.appendChild(li);
+    });
+    return;
+  }
+
+  favorites.forEach(fav => {
+    const li = document.createElement('li');
+    li.style.cursor = 'pointer';
+    li.textContent = fav.text;
+    li.onclick = () => speakText(fav.text, fav.type);
+
+    const list = document.getElementById('favorites-' + fav.type);
+    if (list) list.appendChild(li);
+  });
+}
+
+// Render phrases of a specific type (want, need, feel)
+function renderPhraseList(type) {
+  const list = document.getElementById(type + '-list');
+  list.innerHTML = '';
+  let phrases = loadPhrases(type);
+
+  const sortSelect = document.getElementById(type + '-sort');
+  const sortMode = sortSelect ? sortSelect.value : 'az';
+
+  if (sortMode === 'az') {
+    phrases.sort((a, b) => a.text.localeCompare(b.text));
+  } else if (sortMode === 'za') {
+    phrases.sort((a, b) => b.text.localeCompare(a.text));
+  } else if (sortMode === 'usage') {
+    phrases.sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0));
+  }
+
+phrases.forEach(phraseObj => {
+  const li = createPhraseListItem(phraseObj, type);
+  list.appendChild(li);
+});
+}
+
+// Update all star buttons after clearing favorites
+function setupSortListeners() {
+  ['want', 'need', 'feel'].forEach(type => {
+    const sortSelect = document.getElementById(type + '-sort');
+    if (sortSelect) {
+      sortSelect.addEventListener('change', () => {
+        console.log(`Sort changed for ${type}:`, sortSelect.value); 
+        renderPhraseList(type);
+      });
+    }
+  });
+}
+
+// Setup event listeners
+document.getElementById('want-add-btn').onclick = () => addPhrase('want');
+document.getElementById('need-add-btn').onclick = () => addPhrase('need');
+document.getElementById('feel-add-btn').onclick = () => addPhrase('feel');
+
+// Clear all favorite phrases button handler
+document.getElementById('clear-favorites-btn').onclick = () => {
+  if (confirm("Are you sure you want to clear all favorite phrases?")) {
+    localStorage.removeItem(userKey('favoritePhrases'));
+    renderFavorites();
+    updateAllStars();
+  }
+};
+
+// Initialize favorites and phrase lists on load
+renderFavorites();
+['want', 'need', 'feel'].forEach(renderPhraseList);
+setupSortListeners();
+
+function setupPhraseSearch(type) {
+  const searchInput = document.getElementById(type + '-search');
+  const list = document.getElementById(type + '-list');
+
+  if (!searchInput || !list) return;
+
+  searchInput.addEventListener('input', () => {
+    const filter = searchInput.value.toLowerCase();
+    const items = list.querySelectorAll('li');
+    items.forEach(li => {
+      const text = li.querySelector('span').textContent.toLowerCase();
+      li.style.display = text.includes(filter) ? '' : 'none';
+    });
+  });
+}
+
+function toggleDropdown(category) {
+  const content = document.getElementById(category + '-dropdown-content');
+  if (!content) return;
+  if (content.style.display === 'none' || content.style.display === '') {
+    // Show and populate dropdown
+    const phrases = loadPhrases(category);
+    content.innerHTML = '';
+    if (phrases.length === 0) {
+      content.innerHTML = '<div style="color:#888;">No phrases added yet.</div>';
+    } else {
+phrases.forEach(p => {
+  const li = createPhraseListItem(p, category);
+  // Adjust styles to fit dropdown div
+  li.style.cursor = 'pointer';
+  li.style.marginBottom = '4px';
+  li.style.padding = '2px 4px';
+  li.style.borderRadius = '4px';
+  li.style.backgroundColor = '#f0f0f0';
+
+  //speak the phrase
+  li.querySelector('span').onclick = () => speakText(p.text, category);
+
+  content.appendChild(li);
+      });
+    }
+    content.style.display = 'block';
+  } else {
+    content.style.display = 'none';
+  }
+}
+
+// Attach dropdown button event listeners after DOM ready or script load
+['want', 'need', 'feel'].forEach(category => {
+  const btn = document.getElementById(category + '-dropdown-btn');
+  if (btn) {
+    btn.addEventListener('click', () => toggleDropdown(category));
+  }
+});// --- Render phrase list with search and feedback ---
+function renderPhraseList(type, searchTerm = '') {
+  const list = document.getElementById(`${type}-list`);
+  if (!list) return;
+  list.innerHTML = '';
+
+  let phrases = loadPhrases(type); 
+
+  // Sort by usageCount descending
+  phrases.sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0));
+
+  // Filter based on search term
+  const filtered = searchTerm 
+    ? phrases.filter(p => p.text.toLowerCase().includes(searchTerm))
+    : phrases;
+
+  if (filtered.length === 0) {
+    const li = document.createElement('li');
+    li.style.color = '#888';
+    li.textContent = searchTerm 
+      ? `No phrases found matching "${searchTerm}".` 
+      : 'No phrases yet.';
+    list.appendChild(li);
+    return;
+  }
+
+  filtered.forEach(phrase => {
+    const li = createPhraseListItem(phrase, type);
+    list.appendChild(li);
+  });
+
+  if (searchTerm) {
+    const infoLi = document.createElement('li');
+    infoLi.style.color = '#555';
+    infoLi.style.fontStyle = 'italic';
+    infoLi.textContent = `Found ${filtered.length} match${filtered.length > 1 ? 'es' : ''}.`;
+    list.appendChild(infoLi);
+  }
+}
+
+// --- Setup search inputs ---
+function setupSearch() {
+  ['want', 'need', 'feel'].forEach(type => {
+    const input = document.getElementById(`search-${type}`);
+    if (!input) return;
+
+    // Trigger on every key press
+    input.addEventListener('input', () => {
+      renderPhraseList(type, input.value.trim().toLowerCase());
+    });
+
+    // Trigger on Enter key
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        renderPhraseList(type, input.value.trim().toLowerCase());
+      }
+    });
+  });
+}
+
+// Call setup after DOM is ready
+document.addEventListener('DOMContentLoaded', setupSearch);
+
+// --- Caregiver Notes ---
+function getNotesKey() {
+  return `caregiverNotesHistory_${currentUserId}`;
+}
+
+function displayPreviousNotes() {
+  if (!currentUserId) return; 
+  const previousNotesDiv = document.getElementById('previous-notes');
+  const savedNotes = JSON.parse(localStorage.getItem(getNotesKey())) || [];
+
+  previousNotesDiv.innerHTML = '';
+
+  if (savedNotes.length === 0) {
+    previousNotesDiv.textContent = 'No previous notes saved.';
+    return;
+  }
+
+  savedNotes.forEach((noteObj, index) => {
+    const noteElem = document.createElement('div');
+    noteElem.style.padding = '8px';
+    noteElem.style.borderBottom = '1px solid #ccc';
+    noteElem.style.position = 'relative';
+
+    const timeElem = document.createElement('div');
+    timeElem.style.fontSize = '0.8rem';
+    timeElem.style.color = '#666';
+    timeElem.textContent = noteObj.time;
+
+    const textElem = document.createElement('div');
+    textElem.style.marginTop = '4px';
+    textElem.textContent = noteObj.text;
+
+    // Create delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.style.position = 'absolute';
+    deleteBtn.style.top = '8px';
+    deleteBtn.style.right = '8px';
+    deleteBtn.style.backgroundColor = '#e53e3e';
+    deleteBtn.style.color = 'white';
+    deleteBtn.style.border = 'none';
+    deleteBtn.style.borderRadius = '4px';
+    deleteBtn.style.padding = '2px 8px';
+    deleteBtn.style.cursor = 'pointer';
+
+    deleteBtn.addEventListener('click', () => {
+      deleteNote(index);
+    });
+
+    noteElem.appendChild(timeElem);
+    noteElem.appendChild(textElem);
+    noteElem.appendChild(deleteBtn);
+
+    previousNotesDiv.appendChild(noteElem);
+  });
+}
+
+// Delete note by index
+function deleteNote(index) {
+  if (!currentUserId) return; 
+  let savedNotes = JSON.parse(localStorage.getItem(getNotesKey())) || [];
+  savedNotes.splice(index, 1); 
+  localStorage.setItem(getNotesKey(), JSON.stringify(savedNotes));
+  displayPreviousNotes(); 
+}
+    const caregiverNotes = document.getElementById('caregiver-notes');
+    const saveNotesBtn = document.getElementById('save-notes');
+    
+if (saveNotesBtn) {
+  saveNotesBtn.addEventListener('click', () => {
+    if (!currentUserId) {
+      alert("No user logged in.");
+      return;
+    }
+
+        const noteText = caregiverNotes.value.trim();
+        if (!noteText) {
+            alert("Please enter some notes before saving.");
+            return;
+        }
+
+        const savedNotes = JSON.parse(localStorage.getItem(getNotesKey())) || [];
+        const currentTime = new Date().toLocaleString();
+        savedNotes.push({ text: noteText, time: currentTime });
+        localStorage.setItem(getNotesKey(), JSON.stringify(savedNotes));
+
+        caregiverNotes.value = ''; 
+        displayPreviousNotes(); 
+        });
+    }
+    displayPreviousNotes();
+
+// --- Donation Form ---
+const donationForm = document.getElementById('donation-form');
+const donationAmountInput = document.getElementById('donation-amount');
+const donationMessage = document.getElementById('donation-message');
+const totalDonatedElem = document.getElementById('total-donated');
+
+// Load previous total from localStorage
+let totalDonated = parseFloat(localStorage.getItem('totalDonated')) || 0;
+if (totalDonatedElem) totalDonatedElem.textContent = totalDonated.toFixed(2);
+
+donationForm?.addEventListener('submit', e => {
+  e.preventDefault();
+  const amount = parseFloat(donationAmountInput?.value);
+  
+  if (!amount || amount <= 0) {
+    if (donationMessage) {
+      donationMessage.style.color = 'red';
+      donationMessage.textContent = 'Please enter a valid donation amount.';
+    }
+    return;
+  }
+  
+  totalDonated += amount;
+  localStorage.setItem('totalDonated', totalDonated);
+  if (totalDonatedElem) totalDonatedElem.textContent = totalDonated.toFixed(2);
+  
+  if (donationMessage) {
+    donationMessage.style.color = 'green';
+    donationMessage.textContent = `Thank you for your donation of $${amount.toFixed(2)}!`;
+  }
+  
+  // Reset input to default 10
+  if (donationAmountInput) donationAmountInput.value = 10;
+  
+  // Clear message after 3 seconds
+  setTimeout(() => {
+    if (donationMessage) donationMessage.textContent = '';
+  }, 3000);
+});
+
+
+  // --- Hide all app content initially ---
+  userContent.style.display = "none";
+  appSection.style.display = "none";
+  welcomeSection.style.display = "none";
+loginSection.style.display = "block"; 
+
+const loadingIndicator = document.getElementById('loading');
+  if (loadingIndicator) loadingIndicator.style.display = 'block';
+
+  // --- Auth Handling ---
+onAuthStateChanged(auth, user => {
+  if (user) {
+    currentUserId = user.uid;
+    loginSection.style.display = "none";
+    userContent.style.display = "block";
+    appSection.style.display = "block";
+    welcomeSection.style.display = "block";
+
+    // --- PLANNER LOGIN LOGIC ---
+    onPlannerUserLogin();
+
+    loadGamification();
+    dailyStreak = parseInt(localStorage.getItem(`dailyStreak_${currentUserId}`)) || 0;
+    lastStreakDate = localStorage.getItem(`lastStreakDate_${currentUserId}`) || null;
+    updateStreakDisplay();
+
+    moodHistory = loadUserData('moodHistory') || [];
+    updateMoodHistory();
+    updateMoodChart();
+    loadSchedule();
+    renderFavorites();
+    ['want', 'need', 'feel'].forEach(renderPhraseList);
+
+    displayPreviousNotes();
+  } else {
+    currentUserId = null;
+    loginSection.style.display = "block";
+    userContent.style.display = "none";
+    appSection.style.display = "none";
+    welcomeSection.style.display = "none";
+
+    // --- PLANNER LOGOUT LOGIC ---
+    onPlannerUserLogout();
+  }
+});
+
+// Signup button
+signupBtn.addEventListener("click", async () => {
+  try {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    const role = roleSelect.value;
+
+    if (!email || !password || !role) {
+      return alert("Please fill all fields");
+    }
+    // Signup
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    currentUserId = userCredential.user.uid;
+    localStorage.setItem(`${currentUserId}_userRole`, role); // <-- ONLY HERE
+
+    alert("Account created successfully!");
+  } catch (err) {
+    alert("Signup failed: " + err.message);
+  }
+});
+
+// Login button
+loginBtn.addEventListener("click", async () => {
+  try {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    const role = document.getElementById("role-select").value; // 👈 get selected role
+
+    if (!email || !password || !role) {
+      return alert("Please fill all fields and select a role");
+    }
+
+    // Login
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    currentUserId = userCredential.user.uid;
+    
+    // Save role so applyRolePermissions works
+    localStorage.setItem("role", role);
+
+    // Apply permissions immediately
+    applyRolePermissions();
+
+    // No need to manually switch UI here; onAuthStateChanged handles it
+  } catch (err) {
+    alert("Login failed: " + err.message);
+  }
+});
+
+// --- Role-based Permissions ---
+function applyRolePermissions() {
+  const role = localStorage.getItem("role") || "user";
+
+  // Show/hide caregiver-only buttons or sections
+  document.querySelectorAll("[data-role='caregiver']").forEach(el => {
+    el.style.display = role === "caregiver" ? "inline-block" : "none";
+  });
+
+  // Optional: hide caregiver-only sections
+  document.querySelectorAll(".caregiver-section").forEach(el => {
+    el.style.display = role === "caregiver" ? "block" : "none";
+  });
+
+  // Keep dropdown in sync
+  const roleDropdown = document.getElementById("role-switcher");
+  if (roleDropdown.value !== role) roleDropdown.value = role;
+}
+
+// Handle in-app role change
+document.getElementById("role-switcher").addEventListener("change", (e) => {
+  const selectedRole = e.target.value;
+  localStorage.setItem("role", selectedRole);
+  applyRolePermissions();
+});
+
+// Initialize permissions
+applyRolePermissions();
+
+// Logout button
+logoutBtn.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    alert("You have been logged out.");
+    localStorage.removeItem("role");
+    applyRolePermissions();          
+  } catch (error) {
+    alert("Logout error: " + error.message);
+  }
+});
+});
+</script>
+</body>
+</html>
