@@ -1,0 +1,71 @@
+
+        <!-- Firebase SDKs: PLACE THESE BEFORE YOUR SCRIPT -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+
+window.addEventListener('DOMContentLoaded', () => {
+  let currentUserId = null;
+
+  // --- Firebase Setup ---
+  const firebaseConfig = {
+    apiKey: "AIzaSyC0VUUaKNeAVfaNi0BqdiA2VTof0Me9Au8",
+    authDomain: "easy-speech-aac.firebaseapp.com",
+    projectId: "easy-speech-aac",
+    storageBucket: "easy-speech-aac.appspot.com",
+    messagingSenderId: "2728698117",
+    appId: "1:2728698117:web:5b3db8f5f25bd00756976c"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+// Always sign out on page load (for demo/testing)
+signOut(auth).catch(() => {});
+
+  // --- Cached DOM Elements ---
+  const loginSection = document.getElementById("login-section");
+  const userContent = document.getElementById("user-content");
+  const appSection = document.getElementById("app-section");
+  const welcomeSection = document.getElementById("welcome-section");
+  const userRoleDisplay = document.getElementById("user-role-display");
+  const userNameDisplay = document.getElementById("user-name-display");
+
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const roleSelect = document.getElementById("role-select");
+  const signupBtn = document.getElementById("signup-btn");
+  const loginBtn = document.getElementById("login-btn");
+  const logoutBtn = document.getElementById("logout-btn");
+
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  const phraseTypes = ["want", "need", "feel"];
+  const favoritesListElem = document.getElementById("favorites-list");
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+
+// --- Tab click handling ---
+function setupTabs() {
+  const tabButtons = document.querySelectorAll('button[data-tab]');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+      // Hide all contents
+      tabContents.forEach(c => (c.style.display = 'none'));
+      tabButtons.forEach(b => b.classList.remove('active'));
+
+      // Show selected
+      const target = document.getElementById(btn.dataset.tab);
+      if (target) target.style.display = 'block';
+      btn.classList.add('active');
+    });
+  });
+}
