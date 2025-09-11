@@ -15,12 +15,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // --- Firebase Setup ---
   const firebaseConfig = {
-    apiKey: "AIzaSyC0VUUaKNeAVfaNi0BqdiA2VTof0Me9Au8",
+    apiKey: "",
     authDomain: "easy-speech-aac.firebaseapp.com",
     projectId: "easy-speech-aac",
     storageBucket: "easy-speech-aac.appspot.com",
-    messagingSenderId: "2728698117",
-    appId: "1:2728698117:web:5b3db8f5f25bd00756976c"
+    messagingSenderId: "",
+    appId: ""
   };
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
