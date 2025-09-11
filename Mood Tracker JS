@@ -1,0 +1,278 @@
+
+// --- Mood Tracker ---
+  const moodButtons = document.querySelectorAll('.mood-button');
+  const moodTip = document.getElementById('mood-tip');
+  const moodHistoryElem = document.getElementById('mood-history');
+  const resetMoodHistoryBtn = document.getElementById('reset-mood-history');
+
+  const moodTips = {
+    Happy: 'That\'s wonderful! Keep up the good work and continue what you are doing. Try to do something fun and relaxing, focusing on your special interests.',
+    Sad: 'It\'s okay to feel this way. Try coping with fun activities, finding a comfort item, creating a calm environment, try breathing techniques, or talking to someone you trust. You will be okay!',
+    Angry: 'It\'s ok to be mad! Try different techniques to calm down. Create a calm and predictable environment, identify triggers, try breathing techniques, counting to 10, provide safe spaces, and find support!',
+    Anxious: 'Focus on your breath and creating a calm, simple, setting you are used to. Provide sensory support by using fidget toys and take your mind off the triggers. You can also try grounding techniques to help you feel more present.',
+    Calm: 'Enjoy this peaceful moment to relax and let go. Do something peaceful and fun! Sensory objects can also help calm one down and help you recharge.',
+    Tired: 'Take a well-deserved rest. Take a break from the screen and maybe a short nap! You can also listen to calming music or do a quiet activity.',
+  };
+let moodHistory = loadUserData('moodHistory') || [];
+
+function saveMoodHistory() {
+  saveUserData('moodHistory', moodHistory);
+}
+function updateMoodHistory() {
+  moodHistoryElem.textContent = moodHistory.length
+    ? moodHistory.map(e => `${e.timestamp}: ${e.mood}`).join('\n')
+    : 'No mood recorded yet.';
+}
+const moodPopup = document.getElementById('moodPopup');
+const moodSummary = document.getElementById('moodSummary');
+const closeMoodPopup = document.getElementById('closeMoodPopup');
+function showWeeklyMood() {
+    const moodListItems = document.querySelectorAll('#moodList li');
+    if (moodListItems.length === 0) {
+        moodSummary.innerHTML = 'No moods recorded this week!';
+    } else {
+        // Count moods
+        const counts = {};
+        moodListItems.forEach(item => {
+            const mood = item.textContent.trim();
+            counts[mood] = (counts[mood] || 0) + 1;
+        });
+
+        //recurring mood(s)
+        let maxCount = 0;
+        let topMoods = [];
+        for (const mood in counts) {
+            if (counts[mood] > maxCount) {
+                maxCount = counts[mood];
+                topMoods = [mood];
+            } else if (counts[mood] === maxCount) {
+                topMoods.push(mood);
+            }
+        }
+
+        //summary
+        if (topMoods.length === 1) {
+            moodSummary.innerHTML = `Your most common mood this week is <strong>${topMoods[0]}</strong> (${maxCount} times).`;
+        } else {
+            moodSummary.innerHTML = `Your most common moods this week are <strong>${topMoods.join(", ")}</strong> (${maxCount} times each).`;
+        }
+    }
+    moodPopup.style.display = 'block';
+    document.getElementById('popupOverlay').style.display = 'block';
+}
+closeMoodPopup.onclick = () => {
+    moodPopup.style.display = 'none';
+    document.getElementById('popupOverlay').style.display = 'none';
+};
+
+// Check if today is Sunday (0 = Sunday, 6 = Saturday)
+const today = new Date().getDay();
+if (today === 0) {
+    showWeeklyMood();
+}
+
+// --- Mood Analytics Chart ---
+const moods = ['Happy', 'Sad', 'Angry', 'Anxious', 'Calm', 'Tired'];
+const colors = {
+  Happy: '#4caf50',
+  Sad: '#2196f3',
+  Angry: '#f44336',
+  Anxious: '#ff9800',
+  Calm: '#9c27b0',
+  Tired: '#607d8b'
+};
+
+const ctx = document.getElementById('moodChart').getContext('2d');
+
+let moodChart;
+
+function updateMoodChart() {
+  // Count occurrences for each mood
+  const counts = {};
+  moods.forEach(m => counts[m] = 0);
+  moodHistory.forEach(entry => {
+    if (counts.hasOwnProperty(entry.mood)) {
+      counts[entry.mood]++;
+    }
+  });
+
+  const dataCounts = moods.map(m => counts[m]);
+  const backgroundColors = moods.map(m => colors[m]);
+
+  if (moodChart) {
+    // Update existing chart
+    moodChart.data.datasets[0].data = dataCounts;
+    moodChart.update();
+  } else {
+    // Create chart for first time
+    moodChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: moods,
+        datasets: [{
+          label: 'Mood Counts',
+          data: dataCounts,
+          backgroundColor: backgroundColors,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Count' }
+          }
+        },
+        responsive: true,
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+}
+function updateMoodHistory() {
+  if (!moodHistory.length) {
+    moodHistoryElem.innerHTML = 'No mood recorded yet.';
+    return;
+  }
+
+  // Create a list with delete buttons
+  const ul = document.createElement('ul');
+  ul.style.listStyle = 'none';
+  ul.style.paddingLeft = '0';
+
+  moodHistory.forEach((entry, index) => {
+    const li = document.createElement('li');
+    li.style.marginBottom = '6px';
+    li.style.display = 'flex';
+    li.style.justifyContent = 'space-between';
+    li.style.alignItems = 'center';
+
+    // Entry text
+    const textSpan = document.createElement('span');
+    textSpan.textContent = `${entry.timestamp}: ${entry.mood}`;
+    li.appendChild(textSpan);
+
+    // Delete button
+    const delBtn = document.createElement('button');
+    delBtn.textContent = '✖'; 
+    delBtn.title = 'Delete this entry';
+    delBtn.style.background = '#f44336';
+    delBtn.style.color = 'white';
+    delBtn.style.border = 'none';
+    delBtn.style.borderRadius = '4px';
+    delBtn.style.cursor = 'pointer';
+    delBtn.style.padding = '0 6px';
+    delBtn.style.marginLeft = '12px';
+    delBtn.style.fontWeight = 'bold';
+    delBtn.addEventListener('click', () => {
+      moodHistory.splice(index, 1);
+      saveMoodHistory();
+      updateMoodHistory();
+      updateMoodChart();
+    });
+
+    li.appendChild(delBtn);
+    ul.appendChild(li);
+  });
+
+  // Clear previous content and append the list
+  moodHistoryElem.innerHTML = '';
+  moodHistoryElem.appendChild(ul);
+}
+
+// Event listeners on mood buttons
+  if (moodButtons) {
+    moodButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mood = btn.dataset.mood;
+        moodTip.textContent = moodTips[mood] || 'Select a mood above to get tips.';
+        const timestamp = new Date().toLocaleString();
+        moodHistory.push({ mood, timestamp });
+        if (moodHistory.length > 20) moodHistory.shift();
+        saveMoodHistory();
+        updateMoodHistory();
+        updateMoodChart();
+      });
+    });
+  }
+
+  if (resetMoodHistoryBtn) {
+    resetMoodHistoryBtn.addEventListener('click', () => {
+      if (confirm('Clear mood history?')) {
+        moodHistory = [];
+        saveMoodHistory();
+        updateMoodHistory();
+        updateMoodChart();
+        moodTip.textContent = 'Select a mood above to get tips.';
+      }
+    });
+  }
+  updateMoodHistory();
+  updateMoodChart();
+
+// Print Mood Tracker
+document.getElementById('print-mood-pdf').addEventListener('click', () => {
+  const moodSection = document.getElementById('mood');
+  if (!moodSection) return alert('Mood section not found.');
+
+  // Build full mood history text
+  const fullMoodHistoryText = moodHistory.length
+    ? moodHistory.map(e => `${e.timestamp}: ${e.mood}`).join('\n')
+    : 'No mood recorded yet.';
+
+  // Get chart as image
+  const chartCanvas = document.getElementById('moodChart');
+  let chartImgHTML = '';
+  if (chartCanvas) {
+    const chartDataUrl = chartCanvas.toDataURL('image/png');
+    chartImgHTML = `<img src="${chartDataUrl}" style="max-width:100%;height:auto;margin-bottom:1rem;" />`;
+  }
+
+  // New window for printing
+  const printWindow = window.open('', '', 'width=800,height=600');
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Print Mood Tracker</title>
+        <style>
+          body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 1rem;
+            background: white;
+            color: #374151;
+          }
+          h2, h3 {
+            color: #1F2937;
+          }
+          pre#mood-history {
+            background:#e2e8f0; 
+            padding: 0.5rem; 
+            border-radius:4px; 
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 1rem;
+            line-height: 1.4;
+          }
+          img {
+            display: block;
+            margin: 0 auto 1rem auto;
+          }
+        </style>
+      </head>
+      <body>
+        <h2>Mood Analytics</h2>
+        ${chartImgHTML}
+        <h2>Mood History</h2>
+        <pre id="mood-history">${fullMoodHistoryText}</pre>
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+  printWindow.focus();
+
+  setTimeout(() => {
+    printWindow.print();
+    printWindow.close();
+  }, 500);
+});
