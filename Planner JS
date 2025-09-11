@@ -1,0 +1,636 @@
+
+// --- Daily Streak Feature ---
+let dailyStreak = parseInt(localStorage.getItem(`dailyStreak_${currentUserId}`)) || 0;
+let lastStreakDate = localStorage.getItem(`lastStreakDate_${currentUserId}`) || null;
+
+function updateStreakDisplay() {
+    const streakDisplay = document.getElementById("streakDisplay");
+    if (streakDisplay) {
+        streakDisplay.textContent = `🔥 Streak: ${dailyStreak} days`;
+    }
+}
+
+// Call this whenever a task is completed via the checkmark
+function updateDailyStreak() {
+    if (!currentUserId) return;
+    const today = new Date().toDateString();
+    let lastSavedDate = localStorage.getItem(`lastStreakDate_${currentUserId}`);
+    let currentStreak = parseInt(localStorage.getItem(`dailyStreak_${currentUserId}`)) || 0;
+
+    let streakChanged = false;
+
+    // If no streak started yet
+    if (!lastSavedDate) {
+        currentStreak = 1;
+        lastSavedDate = today;
+        streakChanged = true;
+    } else if (lastSavedDate !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        if (lastSavedDate === yesterday.toDateString()) {
+            currentStreak++; // continue streak
+        } else {
+            currentStreak = 1; // reset streak
+        }
+
+        lastSavedDate = today;
+        streakChanged = true;
+    }
+
+    // Save to localStorage
+    localStorage.setItem(`dailyStreak_${currentUserId}`, currentStreak);
+    localStorage.setItem(`lastStreakDate_${currentUserId}`, lastSavedDate);
+
+    // Update globals
+    dailyStreak = currentStreak;
+    lastStreakDate = lastSavedDate;
+
+    updateStreakDisplay();
+
+    if (streakChanged) {
+        alert(`🔥 Daily streak: ${currentStreak} days!`);
+    }
+}
+
+// Load streak UI on page load
+window.addEventListener("DOMContentLoaded", () => {
+    dailyStreak = parseInt(localStorage.getItem(`dailyStreak_${currentUserId}`)) || 0;
+    lastStreakDate = localStorage.getItem(`lastStreakDate_${currentUserId}`) || null;
+    updateStreakDisplay();
+});
+
+// --- Load gamification for current user ---
+function loadGamification() {
+    if (!currentUserId) return;
+    points = parseInt(localStorage.getItem(`points_${currentUserId}`)) || 0;
+    exp = parseInt(localStorage.getItem(`exp_${currentUserId}`)) || 0;
+    level = parseInt(localStorage.getItem(`level_${currentUserId}`)) || 1;
+
+    updatePointsDisplay();
+    updateLevelDisplay();
+    updateProgressUI();
+
+    // show badges for this user only
+    const badgeNames = {
+        badge7Day: "7-Day Streak",
+        badge1Month: "1-Month Streak",
+        badge3Month: "3-Month Streak",
+        badge6Month: "6-Month Streak",
+        badge12Month: "12-Month Streak"
+    };
+
+    const badgeList = document.getElementById("badgeList");
+    if (badgeList) badgeList.innerHTML = ""; // clear old badges
+
+    Object.keys(badgeNames).forEach(key => {
+        if (localStorage.getItem(`${key}_${currentUserId}`)) {
+            showBadge(badgeNames[key]);
+        }
+    });
+}
+
+// --- Save gamification for current user ---
+function saveGamification() {
+    if (!currentUserId) return;
+    localStorage.setItem(`points_${currentUserId}`, points);
+    localStorage.setItem(`exp_${currentUserId}`, exp);
+    localStorage.setItem(`level_${currentUserId}`, level);
+}
+// --- Progress Bar Logic ---
+function updateProgressBar() {
+  // Level up threshold
+  const requiredExp = 100 * level;
+  const percent = Math.min(100, Math.round((exp / requiredExp) * 100));
+  const progressBar = document.getElementById('progressBar');
+  const progressBarText = document.getElementById('progressBarText');
+  if (progressBar) {
+    progressBar.style.width = percent + '%';
+    // emoji changes based on progress
+    let emoji = "🌱";
+    if (percent >= 100) emoji = "🌸";
+    else if (percent >= 75) emoji = "🌻";
+    else if (percent >= 50) emoji = "🌼";
+    else if (percent >= 25) emoji = "🌿";
+    progressBarText.textContent = `${emoji} ${exp}/${requiredExp}`;
+  }
+}
+
+// --- Update Progress UI ---
+function updateProgressUI() {
+  updatePointsDisplay();
+  updateLevelDisplay();
+  updateProgressBar();
+}
+
+// --- Update progress bar on page load and after login ---
+window.addEventListener("DOMContentLoaded", updateProgressBar);
+
+// --- UI Updates ---
+function updatePointsDisplay() {
+    const pointsDisplay = document.getElementById("pointsDisplay");
+    if (pointsDisplay) pointsDisplay.textContent = `⭐ Points: ${points}`;
+}
+
+function updateLevelDisplay() {
+    const levelDisplay = document.getElementById("levelDisplay");
+    if (levelDisplay) levelDisplay.textContent = `🎯 Level: ${level}`;
+}
+
+// Add points/EXP
+function addPoints(amount = 10) {
+    points += amount;
+    exp += amount;
+    checkLevelUp();
+    saveGamification();
+        updateProgressUI();
+    updatePointsDisplay();
+    updateLevelDisplay();
+    checkBadges();
+}
+
+// Remove points/EXP
+function removePoints(amount = 10) {
+    points = Math.max(0, points - amount);
+    exp = Math.max(0, exp - amount);
+    saveGamification();
+    updatePointsDisplay();
+    updateLevelDisplay();
+        updateProgressUI();
+}
+
+// Level up logic
+function checkLevelUp() {
+    let requiredExp = 100 * level;
+    let leveledUp = false;
+
+    while (exp >= requiredExp) {
+        exp -= requiredExp;
+        level++;
+        leveledUp = true;
+        alert(`🎉 Congrats! You reached Level ${level}!`);
+        requiredExp = 100 * level;
+    }
+
+    if (leveledUp) {
+        saveGamification();      
+        updateLevelDisplay();    
+        updateProgressUI();
+    }
+}
+
+// --- Badge System ---
+function showBadge(badgeName) {
+    const badgeList = document.getElementById("badgeList");
+    if (!badgeList) return;
+    if ([...badgeList.children].some(el => el.textContent.includes(badgeName))) return;
+
+    const badgeElem = document.createElement("div");
+    badgeElem.textContent = `🏅 ${badgeName}`;
+    badgeElem.style.margin = "6px 0";
+    badgeElem.style.fontWeight = "bold";
+    badgeElem.style.color = "#4CAF50";
+    badgeList.appendChild(badgeElem);
+}
+
+function checkBadges() {
+    const streakDays = dailyStreak;
+    const badgeMap = [
+        { key: 'badge7Day', name: '7-Day Streak', days: 7 },
+        { key: 'badge1Month', name: '1-Month Streak', days: 30 },
+        { key: 'badge3Month', name: '3-Month Streak', days: 90 },
+        { key: 'badge6Month', name: '6-Month Streak', days: 180 },
+        { key: 'badge12Month', name: '12-Month Streak', days: 365 }
+    ];
+    badgeMap.forEach(b => {
+        if (!localStorage.getItem(`${b.key}_${currentUserId}`) && streakDays >= b.days) {
+            localStorage.setItem(`${b.key}_${currentUserId}`, true);
+            showBadge(b.name);
+            alert(`🏅 You earned the ${b.name} badge!`);
+        }
+    });
+}
+
+// --- Initialize on Page Load ---
+window.addEventListener("DOMContentLoaded", () => {
+    loadGamification();
+    checkLevelUp(); 
+});
+
+// --- Integrate with Planner Completion ---
+function handleTaskCompletion(li, completed) {
+    if (completed) {
+        addPoints(10);
+        updateDailyStreak();
+        updateProgressUI();
+    } else {
+        removePoints(10);
+        updateProgressUI();
+    }
+}
+
+// --- Helper for localStorage ---
+function loadUserData(key) {
+    const data = localStorage.getItem(`${key}_${currentUserId}`);
+    return data ? JSON.parse(data) : null;
+}
+function refreshUserUI() {
+    loadGamification();
+    updateStreakDisplay();
+}
+// --- Today ---
+function getTodayString() {
+  const d = new Date();
+  return d.toISOString().slice(0, 10); // "YYYY-MM-DD"
+}
+
+document.addEventListener("DOMContentLoaded", applyRolePermissions);
+
+// --- Planner Drag & Drop ---
+const emojiBtn = document.getElementById('emojiBtn');
+const emojiPicker = document.getElementById('emojiPicker');
+const customActivityInput = document.getElementById('customActivityInput');
+const addActivityBtn = document.getElementById('addActivityBtn');
+const activityList = document.getElementById('activityList');  const schedule = document.getElementById('schedule');
+const clearScheduleBtn = document.getElementById('clearScheduleBtn');
+
+  // Emoji picker setup
+  const emojis = [
+    "😀", "😁", "😂", "🤣", "😃", "😄", "😅", "😆",
+    "😉", "😊", "😋", "😎", "😍", "😘", "🥰", "😗",
+    "🤩", "😏", "😔", "😞", "😢", "😭", "😡", "😱",
+    "🎨", "🏫", "🎮", "💻", "🎵", "🧘", "🧼", "🚴", "🚶", "🧹", "🧺", "👕", "💤", "🫖", "📖"
+  ];
+
+  function positionEmojiPicker() {
+    if (!emojiBtn || !emojiPicker) return;
+    const rect = emojiBtn.getBoundingClientRect();
+    emojiPicker.style.top = (rect.bottom + window.scrollY + 5) + 'px';
+    emojiPicker.style.left = (rect.left + window.scrollX) + 'px';
+  }
+
+  function fillEmojiPicker() {
+    if (!emojiPicker) return;
+    emojiPicker.innerHTML = '';
+    emojis.forEach(e => {
+      const span = document.createElement('span');
+      span.textContent = e;
+      span.style.fontSize = '24px';
+      span.style.cursor = 'pointer';
+      span.style.margin = '3px';
+      span.title = e;
+      span.addEventListener('click', () => {
+        insertAtCursor(customActivityInput, e);
+        emojiPicker.style.display = 'none';
+        customActivityInput.focus();
+        addActivityBtn.disabled = customActivityInput.value.trim() === '';
+      });
+      emojiPicker.appendChild(span);
+    });
+  }
+
+  function insertAtCursor(input, textToInsert) {
+    if (!input) return;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const value = input.value;
+    input.value = value.substring(0, start) + textToInsert + value.substring(end);
+    input.selectionStart = input.selectionEnd = start + textToInsert.length;
+  }
+
+  if (emojiBtn && emojiPicker && customActivityInput && addActivityBtn) {
+    emojiBtn.addEventListener('click', () => {
+      if (emojiPicker.style.display === 'none' || emojiPicker.style.display === '') {
+        fillEmojiPicker();
+        positionEmojiPicker();
+        emojiPicker.style.display = 'block';
+      } else {
+        emojiPicker.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!emojiPicker.contains(e.target) && e.target !== emojiBtn) {
+        emojiPicker.style.display = 'none';
+      }
+    });
+  }
+
+  // Add custom activity input
+  if (customActivityInput) {
+    customActivityInput.addEventListener('input', () => {
+      addActivityBtn.disabled = customActivityInput.value.trim() === '';
+    });
+  }
+
+// Add CSS for completed tasks
+const style = document.createElement('style');
+style.textContent = `
+  .completed {
+    text-decoration: line-through;
+    color: #888;
+  }
+`;
+document.head.appendChild(style);
+
+// --- User-specific keys ---
+function plannerKey(key) {
+  return `${currentUserId}_planner_${key}`;
+}
+
+// --- Custom Activities (per user) ---
+function saveCustomActivities(activities) {
+  localStorage.setItem(plannerKey('customActivities'), JSON.stringify(activities));
+}
+function loadCustomActivities() {
+  return JSON.parse(localStorage.getItem(plannerKey('customActivities')) || '[]');
+}
+
+function loadSchedule() {
+  const today = getTodayString();
+  return JSON.parse(localStorage.getItem(plannerKey('schedule_' + today)) || '[]');
+}
+
+// --- Render Activities ---
+function renderCustomActivities() {
+  Array.from(activityList.querySelectorAll('li.custom-activity')).forEach(li => li.remove());
+  const customActivities = loadCustomActivities();
+  customActivities.forEach(text => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    li.setAttribute('draggable', 'true');
+    li.classList.add('draggable', 'custom-activity');
+    li.addEventListener('dragstart', drag);
+    activityList.appendChild(li);
+  });
+}
+
+// --- Add Custom Activity ---
+if (addActivityBtn) {
+  addActivityBtn.addEventListener('click', () => {
+    const text = customActivityInput.value.trim();
+    if (!text) return;
+    let customActivities = loadCustomActivities();
+    if (customActivities.includes(text)) {
+      alert('Activity already exists.');
+      return;
+    }
+    customActivities.push(text);
+    saveCustomActivities(customActivities);
+    renderCustomActivities();
+    customActivityInput.value = "";
+    addActivityBtn.disabled = true;
+  });
+}
+if (customActivityInput) {
+  customActivityInput.addEventListener('input', () => {
+    addActivityBtn.disabled = customActivityInput.value.trim() === '';
+  });
+}
+
+// --- Schedule List Item ---
+function createDraggableListItem(text, completed = false, completedAt = null) {
+  const li = document.createElement('li');
+  li.style.display = 'flex';
+  li.style.alignItems = 'center';
+  li.style.justifyContent = 'space-between';
+
+  // Text span
+  const textSpan = document.createElement('span');
+  textSpan.textContent = text;
+  textSpan.style.flexGrow = '1';
+  textSpan.style.userSelect = 'none';
+  if (completed) textSpan.classList.add('completed');
+  li.appendChild(textSpan);
+
+  // Complete toggle button
+  const completeBtn = document.createElement('button');
+  completeBtn.textContent = completed ? '✅' : '☐';
+  completeBtn.title = completed ? 'Mark as incomplete' : 'Mark as complete';
+  completeBtn.style.marginLeft = '8px';
+  completeBtn.style.cursor = 'pointer';
+
+  completeBtn.onclick = () => {
+    const nowCompleted = !textSpan.classList.contains('completed');
+    if (nowCompleted && confirm(`Did you finish "${text}"?`)) {
+      textSpan.classList.add('completed');
+      completeBtn.textContent = '✅';
+      completeBtn.title = 'Mark as incomplete';
+      li.setAttribute('data-completed-at', Date.now());
+      handleTaskCompletion(li, true);
+    } else if (!nowCompleted) {
+      textSpan.classList.remove('completed');
+      completeBtn.textContent = '☐';
+      completeBtn.title = 'Mark as complete';
+      li.removeAttribute('data-completed-at');
+      handleTaskCompletion(li, false);
+    }
+    saveScheduleToStorage();
+  };
+
+  // Remove button
+  const removeBtn = document.createElement('button');
+  removeBtn.textContent = '❌';
+  removeBtn.style.marginLeft = '8px';
+  removeBtn.style.cursor = 'pointer';
+  removeBtn.onclick = () => {
+    if (confirm(`Are you sure you want this deleted?`)) {
+      li.remove();
+      saveScheduleToStorage();
+    }
+  };
+
+  // Container for buttons
+  const btnContainer = document.createElement('div');
+  btnContainer.style.display = 'flex';
+  btnContainer.appendChild(completeBtn);
+  btnContainer.appendChild(removeBtn);
+
+  li.appendChild(btnContainer);
+
+  // --- DRAGGABLE SCHEDULE REORDER ---
+  li.setAttribute('draggable', 'true');
+  li.addEventListener('dragstart', (e) => {
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', text);
+    e.dataTransfer.setData('from-index', Array.from(schedule.children).indexOf(li));
+  });
+  li.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    li.style.background = '#e0f7fa';
+  });
+  li.addEventListener('dragleave', () => {
+    li.style.background = '';
+  });
+  li.addEventListener('drop', (e) => {
+    e.preventDefault();
+    li.style.background = '';
+    const fromIndex = parseInt(e.dataTransfer.getData('from-index'));
+    const toIndex = Array.from(schedule.children).indexOf(li);
+    if (fromIndex === toIndex) return;
+    const items = Array.from(schedule.children);
+    const moving = items[fromIndex];
+    if (fromIndex < toIndex) {
+      schedule.insertBefore(moving, li.nextSibling);
+    } else {
+      schedule.insertBefore(moving, li);
+    }
+    saveScheduleToStorage();
+  });
+  li.addEventListener('dragend', () => {
+    li.style.background = '';
+  });
+
+  return li;
+}
+// --- Render Schedule ---
+function renderSchedule() {
+  schedule.innerHTML = '';
+  const items = loadSchedule();
+  items.forEach(item => {
+    const li = createDraggableListItem(item.text, item.completed, item.completedAt);
+    schedule.appendChild(li);
+  });
+}
+
+// --- Save/Load Schedule UI ---
+function saveScheduleToStorage() {
+  const items = Array.from(schedule.querySelectorAll('li')).map(li => {
+    const text = li.querySelector('span').textContent.trim();
+    const completed = li.querySelector('span').classList.contains('completed');
+    // Save completedAt if present
+    let completedAt = li.getAttribute('data-completed-at');
+    completedAt = completedAt ? parseInt(completedAt) : null;
+    return completed
+      ? { text, completed, completedAt: completedAt || Date.now() }
+      : { text, completed: false };
+  });
+  saveSchedule(items);
+}
+
+// --- Drag & Drop ---
+function drag(ev) {
+  const phraseText = ev.target.childNodes[0].textContent.trim();
+  ev.dataTransfer.setData('text/plain', phraseText);
+}
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+function drop(ev) {
+  ev.preventDefault();
+  const data = ev.dataTransfer.getData('text/plain');
+  if (!data) return;
+  const li = createDraggableListItem(data, false);
+  schedule.appendChild(li);
+  saveScheduleToStorage();
+}
+
+// --- Clear Schedule ---
+if (clearScheduleBtn) {
+  clearScheduleBtn.addEventListener("click", () => {
+    if (confirm("Are you sure you want to clear your whole schedule?")) {
+      schedule.innerHTML = "";
+      saveSchedule([]);
+    }
+  });
+}
+
+// --- Initialize Activities and Schedule on Login ---
+function initializePlannerUI() {
+  // Make preset activities draggable
+  Array.from(activityList.querySelectorAll('li:not(.custom-activity)')).forEach(li => {
+    li.setAttribute('draggable', 'true');
+    li.classList.add('draggable');
+    li.addEventListener('dragstart', drag);
+  });
+  renderCustomActivities();
+  renderSchedule();
+}
+
+// --- Reset checkmarks daily ---
+function checkAndResetScheduleForToday() {
+  if (!currentUserId) return;
+  const today = getTodayString();
+  const lastSavedKey = plannerKey('schedule_lastDate');
+  const lastSavedDate = localStorage.getItem(lastSavedKey);
+
+  if (lastSavedDate !== today) {
+    // Reset all completed flags for today
+    const items = loadSchedule().map(item => ({ text: item.text, completed: false }));
+    saveSchedule(items);
+    localStorage.setItem(lastSavedKey, today);
+  }
+}
+//save schedule to localStorage
+function saveSchedule(items) {
+  const today = getTodayString();
+  localStorage.setItem(plannerKey('schedule_' + today), JSON.stringify(items));
+}
+
+// --- On login ---
+function onPlannerUserLogin() {
+  checkAndResetScheduleForToday();
+  initializePlannerUI();
+  // Setup drag/drop events
+  if (schedule) {
+    schedule.addEventListener("dragover", allowDrop);
+    schedule.addEventListener("drop", drop);
+  }
+}
+
+// --- On logout, clear planner UI ---
+function onPlannerUserLogout() {
+  schedule.innerHTML = '';
+  Array.from(activityList.querySelectorAll('li.custom-activity')).forEach(li => li.remove());
+}
+
+// Print Schedule Button
+const printScheduleBtn = document.getElementById('print-schedule-btn');
+if (printScheduleBtn) {
+  printScheduleBtn.addEventListener('click', () => {
+    const today = new Date();
+    const options = { weekday: 'long', month: 'long', day: 'numeric' };
+    const formattedDate = today.toLocaleDateString(undefined, options);
+
+    // Get schedule items
+    const items = loadSchedule();
+    let html = `<h2>Schedule for ${formattedDate}</h2>`;
+    if (items.length === 0) {
+      html += '<p>No items scheduled.</p>';
+    } else {
+      html += '<ul style="font-size:1.1em;">';
+      items.forEach(item => {
+        html += `<li style="margin-bottom:8px;">
+          ${item.completed ? '✅ ' : '☐ '}
+          ${item.text}
+        </li>`;
+      });
+      html += '</ul>';
+    }
+
+    // Open print window
+    const printWindow = window.open('', '', 'width=700,height=600');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Print Schedule</title>
+          <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 2rem; color: #374151; }
+            h2 { color: #3B82F6; }
+            ul { list-style: none; padding: 0; }
+            li { margin-bottom: 8px; }
+          </style>
+        </head>
+        <body>
+          ${html}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+      printWindow.print();
+      printWindow.close();
+    }, 500);
+  });
+}
