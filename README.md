@@ -26,3 +26,8 @@ If you find a bug in the code or any other issues you can help us by submitting 
 git clone https://github.com/angelinabdev/easy-speech-aac.git
 cd easy-speech-aac
 ```
+# Contributing
+Contributions are welcome! You can help by submitting bug reports, suggesting features, or submitting pull requests.
+
+# License
+This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
