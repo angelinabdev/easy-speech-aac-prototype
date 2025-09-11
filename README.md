@@ -22,3 +22,7 @@ Easy Speech AAC was created from personal experience as the caretaker of a nonve
 1. Clone the repository:  
    ```bash
    git clone https://github.com/angelinabdev/easy-speech-aac.git
+   cd easy-speech-aac
+
+# Found an Issue?
+If you find a bug in the code or any other issues you can help us by submitting an issue to our GitHub Repository.
