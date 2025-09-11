@@ -5,7 +5,6 @@ Unlike costly alternatives, this platform empowers users with accessible, resear
 # Mission  
 Easy Speech AAC was created from personal experience as the caretaker of a nonverbal sibling. The goal is to **make communication easier, more inclusive, and more affordable for everyone.**
 
-
 # Features  
 **Custom Phrases** → Add, save, and favorite words or sentences to use anytime  
 **Daily Planner** → Drag-and-drop activities with emoji support to structure routines  
@@ -18,11 +17,12 @@ Easy Speech AAC was created from personal experience as the caretaker of a nonve
 *Storage:* LocalStorage (per user)  
 *Accessibility First:* Clean UI, large buttons, and simple flows  
 
-# Getting Started  
-1. Clone the repository:  
-   ```bash
-   git clone https://github.com/angelinabdev/easy-speech-aac.git
-   cd easy-speech-aac
-
 # Found an Issue?
 If you find a bug in the code or any other issues you can help us by submitting an issue to our GitHub Repository.
+
+# Getting Started  
+1. Clone the repository:
+```bash
+git clone https://github.com/angelinabdev/easy-speech-aac.git
+cd easy-speech-aac
+```
