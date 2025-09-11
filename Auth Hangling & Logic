@@ -1,0 +1,139 @@
+
+  // --- Hide all app content initially ---
+  userContent.style.display = "none";
+  appSection.style.display = "none";
+  welcomeSection.style.display = "none";
+loginSection.style.display = "block"; 
+
+const loadingIndicator = document.getElementById('loading');
+  if (loadingIndicator) loadingIndicator.style.display = 'block';
+
+  // --- Auth Handling ---
+onAuthStateChanged(auth, user => {
+  if (user) {
+    currentUserId = user.uid;
+    loginSection.style.display = "none";
+    userContent.style.display = "block";
+    appSection.style.display = "block";
+    welcomeSection.style.display = "block";
+
+    // --- PLANNER LOGIN LOGIC ---
+    onPlannerUserLogin();
+
+    loadGamification();
+    dailyStreak = parseInt(localStorage.getItem(`dailyStreak_${currentUserId}`)) || 0;
+    lastStreakDate = localStorage.getItem(`lastStreakDate_${currentUserId}`) || null;
+    updateStreakDisplay();
+
+    moodHistory = loadUserData('moodHistory') || [];
+    updateMoodHistory();
+    updateMoodChart();
+    loadSchedule();
+    renderFavorites();
+    ['want', 'need', 'feel'].forEach(renderPhraseList);
+
+    displayPreviousNotes();
+  } else {
+    currentUserId = null;
+    loginSection.style.display = "block";
+    userContent.style.display = "none";
+    appSection.style.display = "none";
+    welcomeSection.style.display = "none";
+
+    // --- PLANNER LOGOUT LOGIC ---
+    onPlannerUserLogout();
+  }
+});
+
+// Signup button
+signupBtn.addEventListener("click", async () => {
+  try {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    const role = roleSelect.value;
+
+    if (!email || !password || !role) {
+      return alert("Please fill all fields");
+    }
+    // Signup
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    currentUserId = userCredential.user.uid;
+    localStorage.setItem(`${currentUserId}_userRole`, role); // <-- ONLY HERE
+
+    alert("Account created successfully!");
+  } catch (err) {
+    alert("Signup failed: " + err.message);
+  }
+});
+
+// Login button
+loginBtn.addEventListener("click", async () => {
+  try {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    const role = document.getElementById("role-select").value; // 👈 get selected role
+
+    if (!email || !password || !role) {
+      return alert("Please fill all fields and select a role");
+    }
+
+    // Login
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    currentUserId = userCredential.user.uid;
+    
+    // Save role so applyRolePermissions works
+    localStorage.setItem("role", role);
+
+    // Apply permissions immediately
+    applyRolePermissions();
+
+    // No need to manually switch UI here; onAuthStateChanged handles it
+  } catch (err) {
+    alert("Login failed: " + err.message);
+  }
+});
+
+// --- Role-based Permissions ---
+function applyRolePermissions() {
+  const role = localStorage.getItem("role") || "user";
+
+  // Show/hide caregiver-only buttons or sections
+  document.querySelectorAll("[data-role='caregiver']").forEach(el => {
+    el.style.display = role === "caregiver" ? "inline-block" : "none";
+  });
+
+  // Optional: hide caregiver-only sections
+  document.querySelectorAll(".caregiver-section").forEach(el => {
+    el.style.display = role === "caregiver" ? "block" : "none";
+  });
+
+  // Keep dropdown in sync
+  const roleDropdown = document.getElementById("role-switcher");
+  if (roleDropdown.value !== role) roleDropdown.value = role;
+}
+
+// Handle in-app role change
+document.getElementById("role-switcher").addEventListener("change", (e) => {
+  const selectedRole = e.target.value;
+  localStorage.setItem("role", selectedRole);
+  applyRolePermissions();
+});
+
+// Initialize permissions
+applyRolePermissions();
+
+// Logout button
+logoutBtn.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    alert("You have been logged out.");
+    localStorage.removeItem("role");
+    applyRolePermissions();          
+  } catch (error) {
+    alert("Logout error: " + error.message);
+  }
+});
+});
+</script>
+</body>
+</html>
