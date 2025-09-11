@@ -1,0 +1,533 @@
+
+<body class="light-theme">
+  <header class="app-header">
+    <div class="header-inner">
+      <img src="/Users/angelinabrunelle1/Downloads/E (2).png" alt="Communication icon" class="logo" />
+      <div id="themeToggleContainer" class="theme-toggle" aria-hidden="false">
+        <label class="switch" title="Toggle theme">
+          <input type="checkbox" id="themeToggle" aria-label="Toggle theme">
+          <span class="slider round"></span>
+        </label>
+        <span id="themeLabel">Light Mode</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Login simulation -->
+    <section id="login-section">
+      <h2>Login or Create Account</h2>
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" placeholder="Enter your email" required />
+
+  <label for="password">Password:</label>
+  <input type="password" id="password" placeholder="Enter your password" required />
+
+  <label for="role-select">Select Role:</label>
+  <select id="role-select">
+    <option value="" disabled selected>Select role</option>
+    <option value="user">User</option>
+    <option value="caregiver">Caregiver</option>
+  </select>
+
+  <button id="signup-btn">Create Account</button>
+  <button id="login-btn">Login</button>
+</section>
+        
+<section id="user-content" style="display:none;">
+  <h2>Welcome to Easy Speech AAC!                  <button id="logout-btn">Logout</button> </h2>
+  <p>Hi<span id="user-name-display"></span>! You are logged in as a <span id="user-role-display"></span>! Log out to change roles. </p>
+
+  <p> We're happy you're here. This app is designed to make communication and mood tracking simple!</p>
+</section>
+    <!-- App interface -->
+    <section id="app-section" style="display:none;">
+<nav>
+  <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+  <button class="tab-btn" data-tab="planner">Daily Planner</button>
+  <button class="tab-btn" data-tab="phrases">My Phrases</button>
+  <button class="tab-btn" data-tab="mood">Mood Tracker/Analytics</button>
+  <button class="tab-btn" data-tab="calming-audio">Calming Audios</button>
+  <button class="tab-btn" data-tab="notes" data-role="caregiver">Caregiver Notes</button> 
+  <button class="tab-btn" data-tab="resources">Resources & Donate</button>
+  <button class="tab-btn" data-tab="contact">Contact Us</button>
+</nav>
+
+<!-- Caregiver Notes Section -->
+<section id="notes" class="tab-content" style="display:none; margin-top: 2rem;">
+  <h2>Caregiver Notes</h2>
+  <textarea id="caregiver-notes" placeholder="Write observations here..."></textarea>
+  <button id="save-notes">Save Notes</button>
+  <h3>Previous Notes</h3>
+  <div id="previous-notes" style="background: #f4f4f4; padding: 10px; border-radius: 6px; max-height: 200px; overflow-y: auto; white-space: pre-wrap; border: 1px solid #ccc;"></div>
+  <!-- Quick Tips for Caregiving Notes -->
+<div class="quick-tips" style="background-color:#e2e5e8; padding:12px 20px; border-radius:8px; margin:16px 0; font-family:sans-serif; font-size:14px;">
+  <strong>Quick Tips ❓</strong>
+  <ul style="margin:8px 0 0 16px; padding:0; list-style-type:disc;">
+    <li>Use the “Add Note” button to log a new caregiving entry.</li>
+    <li>Click the delete icons next to a note to remove it from notes history.</li>
+    <li>Jot down observations or patterns in behavior.</li>
+  </ul>
+</div>
+</section>
+
+<!-- Welcome section -->
+<section id="welcome-section" style="display:none;">
+
+      <!-- Dashboard -->
+      <section id="dashboard" class="tab-content">
+
+        <ul style="list-style: none; padding: 0; font-size: 1.1rem; line-height: 1.6;">
+          <li>⭐ Express how you feel by using our simple interface.</li>
+          <li>⭐ Use the drag-and-drop planner to create easy schedules.</li>
+          <li>⭐ Tap phrases to speak your needs.</li>
+          <li>⭐ Relax with calming music when overwhelmed.</li>
+          <li>⭐ Caregivers can track mood analytics and take helpful notes.</li>
+        </ul>
+
+    <!-- Mission statement -->
+        <section>
+          <h2>Our Mission</h2>
+          <p>
+              Easy Speech AAC is a free, nonprofit tool developed through research and personal experience to empower individuals with communication challenges. Unlike many costly alternatives, our tool offers support by enabling users to express their needs, monitor emotions, and manage routines effectively. I am dedicated to enhancing the quality of life for both caregivers and users, while also striving to raise funds for autism and disability-related charities.
+          </p>
+        </section>
+            <!-- Role Switcher inside the app -->
+  <div id="role-container" style="margin: 1rem 0;">
+    <label for="role-switcher">Switch Role: </label>
+      <select id="role-switcher">
+      <option value="user">User</option>
+      <option value="caregiver">Caregiver</option>
+    </select>
+  </div>
+    </section>
+</section>
+
+<!-- Calming Audio Tab -->
+<section id="calming-audio" class="tab-content" style="display:none; margin-top: 2rem;">
+  <h2>🎧 Calming Audio</h2>
+
+  <!-- Poco by Roo Walker -->
+  <div style="margin-bottom:1.5rem;">
+    <audio controls>
+      <source src="file:///Users/angelinabrunelle1/Downloads/poco-roo-walker-main-version-02-22-9624.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <p style="font-size: 0.9rem; color: #868080; margin-top: 0.5rem;">
+      Music: <a href="https://uppbeat.io/t/roo-walker/poco" target="_blank" rel="noopener noreferrer" style="color:#4a90e2;">Poco by Roo Walker</a> from Uppbeat<br />
+      License code: <strong>ORMZGL9CGL0BG0BK</strong>
+    </p>
+  </div>
+
+  <!-- Winter Storm by Brock Hewitt -->
+  <div style="margin-bottom:1.5rem;">
+    <audio controls>
+      <source src="file:///Users/angelinabrunelle1/Downloads/winter-storm-brock-hewitt-stories-in-sound-main-version-23614-03-54.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <p style="font-size: 0.9rem; color: #868080; margin-top: 0.5rem;">
+      Music: <a href="https://uppbeat.io/t/brock-hewitt-stories-in-sound/winter-storm" target="_blank" rel="noopener noreferrer" style="color:#4a90e2;">Winter Storm by Brock Hewitt</a> from Uppbeat<br />
+      License code: <strong>EUHZFMICI1RAV5BG</strong>
+    </p>
+  </div>
+  <!-- Quick Tips Section -->
+<div class="quick-tips" style="background-color:#e2e5e8; padding:12px 20px; border-radius:8px; margin:16px 0; font-family:sans-serif; font-size:14px;">
+  <strong>Quick Tips ❓</strong>
+  <ul style="margin:8px 0 0 16px; padding:0; list-style-type:disc;">
+    <li>Scroll up and down to discover new music.</li>
+    <li>Click pause and play buttons to listen to whichever song you please.</li>
+    <li>Change the playback speed or slide the volume control to adjust your listening experience.</li>
+  </ul>
+</div>
+</section>
+
+<!-- Planner Section -->
+<section id="planner" class="tab-content" style="display:none;">
+  <h2>📅 Daily Planner</h2>
+
+  <!-- Current Day -->
+  <div id="currentDay" style="font-weight: bold; margin-bottom: 1rem;"></div>
+
+  <!-- Daily Streak -->
+  <div id="streakDisplay" style="margin: 0.5rem 0; font-weight: bold;">
+    🔥 Streak: 1 day
+  </div>
+
+  <!-- Activity Input -->
+  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+    <button id="emojiBtn" title="Add Emoji">😀</button>
+    <input type="text" id="customActivityInput" placeholder="Add your own activity (e.g. 🎨 Drawing)" />
+    <button id="addActivityBtn" disabled>➕ Add Activity</button>
+  </div>
+
+  <!-- Emoji Picker -->
+  <div id="emojiPicker" 
+       style="display: none; 
+              border: 1px solid #ccc; 
+              padding: 5px; 
+              background: white; 
+              position: absolute; 
+              max-width: 200px; 
+              max-height: 120px; 
+              overflow-y: auto; 
+              border-radius: 6px; 
+              box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
+              z-index: 100;">
+  </div>
+
+  <!-- Main Columns: Activities + Schedule -->
+  <div style="display: flex; gap: 40px; margin-top: 1rem;">
+    
+    <!-- Activities Column -->
+    <div style="flex: 1;">
+      <h3>🧲 Activities</h3>
+      <ul id="activityList">
+        <li draggable="true" class="draggable">🪥 Brush Teeth</li>
+        <li draggable="true" class="draggable">🍳 Eat Breakfast</li>
+        <li draggable="true" class="draggable">🏃 Exercise</li>
+        <li draggable="true" class="draggable">📚 Study</li>
+        <li draggable="true" class="draggable">🛌 Rest</li>
+      </ul>
+    </div>
+  <!-- Quick Tips Underneath Columns -->
+  <div class="quick-tips" style="
+      background-color:#e2e5e8; 
+      padding:12px 20px; 
+      border-radius:8px; 
+      margin:16px 0 32px 0; 
+      font-family:sans-serif; 
+      font-size:14px;
+      min-height: 180px;
+  ">
+    <strong>Quick Tips ❓</strong>
+    <ul style="margin:8px 0 0 16px; padding:0; list-style-type:disc;">
+      <li>Drag and drop activities to schedule your day.</li>
+      <li>Click add activity to save custom activity.</li>
+      <li>Click checkmark to confirm completion (10pts).</li>
+      <li>Undo checkmark by clicking it again (if not completed).</li>
+      <li>Click X to remove activity or clear schedule to start fresh.</li>
+      <li>Reach a level-up threshold by completing activities.</li>
+      <li>Print your schedule to keep track of your activities.</li>
+    </ul>
+  </div>
+</div>
+
+    <!-- Schedule Column -->
+    <div style="flex: 1;">
+      <h3>🗓️ Schedule</h3>
+      <ul id="schedule" 
+          style="min-height: 200px; 
+                 border: 2px dashed #4a90e2; 
+                 padding: 10px; 
+                 border-radius: 6px;">
+      </ul>
+
+<!-- Action Buttons -->
+<div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 10px;">
+  <button id="clearScheduleBtn" 
+          style="width: 100%; 
+                 padding: 0.8rem 1.2rem; 
+                 border-radius: 8px; 
+                 border: none; 
+                 background-color: #ef4444; 
+                 color: white; 
+                 font-weight: 600; 
+                 cursor: pointer; 
+                 box-shadow: 0 3px 8px rgba(239, 68, 68, 0.5);">
+    🧹 Clear Schedule
+  </button>
+
+  <button id="print-schedule-btn" 
+          style="width: 100%; 
+                 padding: 0.8rem 1.2rem; 
+                 border-radius: 8px; 
+                 border: none; 
+                 background-color: #3B82F6; 
+                 color: white; 
+                 font-weight: 600; 
+                 cursor: pointer; 
+                 box-shadow: 0 3px 8px rgba(59, 130, 246, 0.6);">
+    🖨️ Print Schedule
+  </button>
+</div>
+
+  <!-- Gamification Section -->
+  <div id="gamification" style="border: 2px solid #4CAF50; padding: 12px; border-radius: 10px; margin-top: 20px; background: #dce3dc;">
+    <h2 style="margin: 0 0 10px 0; color: #4CAF50;">🏆 My Progress</h2>
+
+    <!-- Progress Bar -->
+    <div id="progressBarContainer" style="background: #e0f7fa; border-radius: 18px; height: 60px; margin: 24px auto 18px auto; box-shadow: 0 2px 12px rgba(76, 175, 80, 0.13); overflow: hidden; position: relative; max-width: 420px; min-width: 220px; display: flex; align-items: center;">
+      <div id="progressBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #63c3ae 60%, #81bbc7 100%); border-radius: 18px; transition: width 0.5s cubic-bezier(.4,2,.3,1); display: flex; align-items: center; justify-content: flex-end; font-weight: bold; color: #e8e8e8; font-size: 1.35em; box-shadow: 0 2px 8px rgba(76, 175, 80, 0.18); padding-right: 22px; min-width: 40px;">
+        <span id="progressBarText" style="text-shadow: 0 1px 2px #388e3c;">🌱</span>
+      </div>
+    </div>
+
+    <!-- Points & Level -->
+    <div id="pointsDisplay" style="font-size: 1.2em; margin-bottom: 6px;">⭐ Points: 0</div>
+    <div id="levelDisplay" style="font-size: 1.2em; margin-bottom: 10px;">🎯 Level: 1</div>
+
+    <!-- Badges -->
+    <div id="badgeSection">
+      <h3 style="margin: 0 0 6px 0; font-size: 1em; color: #555;">Badges Earned:</h3>
+      <div id="badgeList" style="display: flex; flex-direction: column;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Mood Tracker -->
+<section id="mood" class="tab-content" style="display:none;">
+  <h2>Mood Tracker</h2>
+  <p>Tap your current mood:</p>
+  <div id="mood-buttons">
+    <button class="mood-button" data-mood="Happy">😊 Happy</button>
+    <button class="mood-button" data-mood="Sad">😢 Sad</button>
+    <button class="mood-button" data-mood="Angry">😡 Angry</button>
+    <button class="mood-button" data-mood="Anxious">😰 Anxious</button>
+    <button class="mood-button" data-mood="Calm">😌 Calm</button>
+    <button class="mood-button" data-mood="Tired">😴 Tired</button>
+  </div>
+
+  <h3>Mood Tips</h3>
+  <p id="mood-tip">Select a mood above to get tips.</p>
+
+  <h3>Mood History</h3>
+  <pre id="mood-history" style="background:#ced4dc; padding: 0.5rem; border-radius:4px; max-height:150px; overflow:auto;"></pre>
+  <button id="reset-mood-history">Reset Mood History</button>
+
+  <!-- Mood Analytics Chart -->
+  <h2>Mood Analytics</h2>
+  <p>Refresh the page to see updated mood analytics</p>
+  <canvas id="moodChart" style="max-width: 700px; max-height: 400px;"></canvas>
+
+  <!-- Mood Analytics Print -->
+  <button id="print-mood-pdf" style="
+    background:#3B82F6; 
+    color:white; 
+    border:none; 
+    padding:0.6rem 1.1rem; 
+    border-radius:8px; 
+    cursor:pointer; 
+    font-weight:600; 
+    margin-top: 1rem;
+    box-shadow: 0 3px 8px rgba(59, 130, 246, 0.6);
+  ">🖨️ Print Mood</button>
+</section>
+
+<!-- Include Chart.js once -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+      
+<!-- Phrases Section -->
+<section id="phrases" class="tab-content" style="display:none;">
+  <h2>⭐ Favorite Phrases</h2>
+  <div id="favorites-columns" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+    <div style="background:#f9f9f9; padding:0.5rem; border-radius:6px; min-height:60px;">
+      <h3 style="text-align:center;">Want</h3>
+      <ul id="favorites-want" class="favorites-column" style="list-style:none; padding-left:0;"></ul>
+    </div>
+    <div style="background:#f9f9f9; padding:0.5rem; border-radius:6px; min-height:60px;">
+      <h3 style="text-align:center;">Need</h3>
+      <ul id="favorites-need" class="favorites-column" style="list-style:none; padding-left:0;"></ul>
+    </div>
+    <div style="background:#f9f9f9; padding:0.5rem; border-radius:6px; min-height:60px;">
+      <h3 style="text-align:center;">Feel</h3>
+      <ul id="favorites-feel" class="favorites-column" style="list-style:none; padding-left:0;"></ul>
+    </div>
+  </div>
+
+ <button id="clear-favorites-btn" style="background:#e53e3e; color:white; border:none; padding:0.4rem 0.8rem; border-radius:4px; cursor:pointer; margin-bottom:1rem;">
+    Clear Favorite Phrases
+  </button>
+
+  <!-- Category Selector -->
+  <h2 for="phrase-category-select" style="font-weight: bold; display:block; margin-top: 1rem;">Choose Phrase Category</h2>
+      <p>Add phrases! Users can choose their categories and type or tap words under the drop down menu to speak! </p>
+  <select id="phrase-category-select" onchange="switchCategory(this.value)" style="margin-bottom:1rem; padding:0.5rem; border-radius:6px; border:1px solid #cccccc;">
+    <option value="want">Want Phrases</option>
+    <option value="need">Need Phrases</option>
+    <option value="feel">Feel Phrases</option>
+  </select>
+
+    <!-- Example Category Card -->
+    <div class="phrase-card" id="want-section" style="background:#f0f4f8; padding:1rem; border-radius:8px;">
+      <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+        <input id="want-input" placeholder="Add a 'want' phrase" style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+        <select id="want-sort" style="padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+          <option value="az">A–Z</option>
+          <option value="za">Z–A</option>
+          <option value="usage">Most Used</option>
+        </select>
+        <button id="want-add-btn" style="padding:0.5rem 1rem; border-radius:6px; border:none; background:#3B82F6; color:white; cursor:pointer;">Add</button>
+      </div>
+
+      <!-- Collapsible List -->
+      <div id="want-dropdown-content" style="display:none; max-height:150px; overflow-y:auto; margin-top:4px; padding:4px; border:1px solid #ccc; border-radius:6px; background:white;"></div>
+    </div>
+
+    <!-- Repeat for Need -->
+    <div class="phrase-card" id="need-section" style="display:none; background:#f0f4f8; padding:1rem; border-radius:8px;">
+      <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+        <input id="need-input" placeholder="Add a 'need' phrase" style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+        <select id="need-sort" style="padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+          <option value="az">A–Z</option>
+          <option value="za">Z–A</option>
+          <option value="usage">Most Used</option>
+        </select>
+        <button id="need-add-btn" style="padding:0.5rem 1rem; border-radius:6px; border:none; background:#3B82F6; color:white; cursor:pointer;">Add</button>
+      </div>
+      <div id="need-dropdown-content" style="display:none; max-height:150px; overflow-y:auto; margin-top:4px; padding:4px; border:1px solid #ccc; border-radius:6px; background:white;"></div>
+    </div>
+
+    <!-- Repeat for Feel -->
+    <div class="phrase-card" id="feel-section" style="display:none; background:#f0f4f8; padding:1rem; border-radius:8px;">
+      <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+        <input id="feel-input" placeholder="Add a 'feel' phrase" style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+        <select id="feel-sort" style="padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+          <option value="az">A–Z</option>
+          <option value="za">Z–A</option>
+          <option value="usage">Most Used</option>
+        </select>
+        <button id="feel-add-btn" style="padding:0.5rem 1rem; border-radius:6px; border:none; background:#3B82F6; color:white; cursor:pointer;">Add</button>
+      </div>
+      <div id="feel-dropdown-content" style="display:none; max-height:150px; overflow-y:auto; margin-top:4px; padding:4px; border:1px solid #ccc; border-radius:6px; background:white;"></div>
+    </div>
+
+  </div>
+<!-- Under add button -->
+<button class="dropdown-btn" id="want-dropdown-btn">▼ Show All Want Phrases</button>
+<div class="dropdown-content" id="want-dropdown-content" style="display:none; border:1px solid #ccc; max-height:150px; overflow-y:auto; margin-top:4px; padding:4px; background:#fff; position:relative; z-index:10;"></div>
+<ul id="want-list"></ul>
+
+<!-- Under add button -->
+<button class="dropdown-btn" id="need-dropdown-btn">▼ Show All Need Phrases</button>
+<div class="dropdown-content" id="need-dropdown-content" style="display:none; border:1px solid #ccc; max-height:150px; overflow-y:auto; margin-top:4px; padding:4px; background:#fff; position:relative; z-index:10;"></div>
+<ul id="need-list"></ul>
+
+<!-- Under add button -->
+<button class="dropdown-btn" id="feel-dropdown-btn">▼ Show All Feel Phrases</button>
+<div class="dropdown-content" id="feel-dropdown-content" style="display:none; border:1px solid #ccc; max-height:150px; overflow-y:auto; margin-top:4px; padding:4px; background:#fff; position:relative; z-index:10;"></div>
+<ul id="feel-list"></ul>
+
+  <!-- Search Section -->
+  <section id="search-section" style="margin-top: 1.5rem;">
+    <h2>Search Phrases</h2>
+    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+      <input type="text" id="search-want" placeholder="Search 'want' phrases" style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+      <input type="text" id="search-need" placeholder="Search 'need' phrases" style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+      <input type="text" id="search-feel" placeholder="Search 'feel' phrases" style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid #ccc;">
+    </div>
+  </section>
+
+<script>
+function switchCategory(selected) {
+  ['want', 'need', 'feel'].forEach(type => {
+    document.getElementById(type + '-section').style.display = (type === selected) ? 'block' : 'none';
+  });
+}
+</script>
+
+<!-- Quick Tips for Phrases -->
+<div class="quick-tips" style="background-color:#e2e5e8; padding:12px 20px; border-radius:8px; margin:16px 0; font-family:sans-serif; font-size:14px;">
+  <strong>Quick Tips ❓</strong>
+  <ul style="margin:8px 0 0 16px; padding:0; list-style-type:disc;">
+    <li>Type a word or phrase in the input box and press add to save word in category.</li>
+    <li>Click on a phrase in the dropdown menu to have it spoken out loud.</li>
+    <li>Use the star icon to favorite phrases for quick access.</li>
+    <li>Use the X icon to remove phrases.</li>
+    <li>Click clear all favorites to remove all starred terms.</li>
+  </ul>
+</div>
+</section>
+
+<!-- Resources & Donate -->
+<section id="resources" class="tab-content" style="display:none; padding:1rem;">
+  <h2>Resources</h2>
+  <p>Helpful links for caregivers and disability support:</p>
+  <div style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1.5rem;">
+    <a href="https://www.autismspeaks.org" target="_blank" class="resource-link" style="padding:8px 12px; background:#e0f2fe; border-radius:6px; text-decoration:none; color:#1e40af;">
+      Autism Speaks: promoting awareness, advocacy, and research for autism spectrum disorders
+    </a>
+    <a href="https://www.autism-society.org" target="_blank" class="resource-link" style="padding:8px 12px; background:#e0f2fe; border-radius:6px; text-decoration:none; color:#1e40af;">
+      Autism Society: offers support to improve the lives of people with autism and their families
+    </a>
+    <a href="https://www.understood.org" target="_blank" class="resource-link" style="padding:8px 12px; background:#e0f2fe; border-radius:6px; text-decoration:none; color:#1e40af;">
+      Understood.org: resources and community for people with learning and attention issues
+    </a>
+  </div>
+
+<h2>Donate Today</h2>
+<div id="donation" style="text-align: center; margin: 1.5rem 0;">
+  <p>If you'd like to support autism research and services, please consider donating through my official GoFundMe campaign for the Organization for Autism Research.</p>
+  <a href="https://gofund.me/66f8d46d4" target="_blank" 
+     style="display: inline-block; background-color: #28a745; color: #fff; font-size: 1.2rem; font-weight: bold; padding: 12px 24px; border-radius: 8px; text-decoration: none;">
+    Donate on GoFundMe
+  </a>
+  <p style="margin-top: 1rem; font-size: 0.95rem; color: #8a8989;">
+    100% of donations go directly to the Organization for Autism Research via GoFundMe.
+  </p>
+</div>
+
+</section>
+
+<!-- Contact Section with Direct Link -->
+<section id="contact" class="tab-content" style="display:none;">
+  <h2>Contact!</h2>
+  <p>If you have questions or need support, click the link below to contact me. User reviews and feedback are important!</p>
+  <a href="https://formsubmit.co/el/covedi" target="_blank" style="font-weight: bold; color: #007BFF;">
+    Open Contact Form
+  </a>
+    <!-- Extra Note -->
+  <p style="margin-top: 1rem; font-size: 0.9rem; color: #555;">
+    I do my best to respond within a few days. Thank you for supporting Easy Speech AAC!
+  </p>
+  
+    <!-- Direct Contact -->
+  <p><strong>Email:</strong> <a href="mailto:easyspeechaac@example.com">easyspeechaac@example.com</a></p>
+
+  <!-- Social Links -->
+  <div style="margin: 1rem 0;">
+    <a href="https://github.com/angelinabrunelle" target="_blank" style="margin: 0 10px;">GitHub</a> |
+    <a href="https://www.linkedin.com/in/angelinabrunelle" target="_blank" style="margin: 0 10px;">LinkedIn</a> |
+    <a href="https://www.instagram.com/easyspeechaac" target="_blank" style="margin: 0 10px;">Instagram</a>
+  </div>
+</section>
+
+<!-- Mood of the Week Popup -->
+<div id="moodPopup" style="
+    display:none;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+    z-index:1001;
+    width:300px;
+    text-align:center;
+">
+    <h2>Mood of the Week</h2>
+    <div id="moodSummary" style="margin:15px 0;"></div>
+    <button id="closeMoodPopup" style="
+        padding:8px 16px;
+        border:none;
+        background:#4CAF50;
+        color:white;
+        border-radius:5px;
+        cursor:pointer;
+    ">Close</button>
+</div>
+
+<!-- Overlay -->
+<div id="popupOverlay" style="
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    z-index:1000;
+"></div>
