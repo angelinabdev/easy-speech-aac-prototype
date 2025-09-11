@@ -3,8 +3,7 @@ Easy Speech AAC is a free, nonprofit communication tool built to support individ
 Unlike costly alternatives, this platform empowers users with accessible, research-driven features designed to improve quality of life for both individuals and caregivers.  
 
 # Mission  
-Easy Speech AAC was created from personal experience as the caretaker of a nonverbal sibling.  
-The goal is simple: make communication easier, more inclusive, and more affordable for everyone.
+Easy Speech AAC was created from personal experience as the caretaker of a nonverbal sibling. The goal is simple: make communication easier, more inclusive, and more affordable for everyone.
 
 # Features  
 **Custom Phrases** → Add, save, and favorite words or sentences to use anytime  
