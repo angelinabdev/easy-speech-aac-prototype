@@ -635,7 +635,7 @@ body.dark-theme {
 <body class="light-theme">
   <header class="app-header">
     <div class="header-inner">
-      <img src="/Users/angelinabrunelle1/Downloads/E (2).png" alt="Communication icon" class="logo" />
+      <img src="logo.png" alt="Communication icon" class="logo" />
       <div id="themeToggleContainer" class="theme-toggle" aria-hidden="false">
         <label class="switch" title="Toggle theme">
           <input type="checkbox" id="themeToggle" aria-label="Toggle theme">
@@ -744,7 +744,7 @@ body.dark-theme {
   <!-- Poco by Roo Walker -->
   <div style="margin-bottom:1.5rem;">
     <audio controls>
-      <source src="file:///Users/angelinabrunelle1/Downloads/poco-roo-walker-main-version-02-22-9624.mp3" type="audio/mpeg" />
+      <source src="music.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
     <p style="font-size: 0.9rem; color: #868080; margin-top: 0.5rem;">
@@ -756,7 +756,7 @@ body.dark-theme {
   <!-- Winter Storm by Brock Hewitt -->
   <div style="margin-bottom:1.5rem;">
     <audio controls>
-      <source src="file:///Users/angelinabrunelle1/Downloads/winter-storm-brock-hewitt-stories-in-sound-main-version-23614-03-54.mp3" type="audio/mpeg" />
+      <source src="music.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
     <p style="font-size: 0.9rem; color: #868080; margin-top: 0.5rem;">
@@ -1120,8 +1120,7 @@ function switchCategory(selected) {
 
   <!-- Social Links -->
   <div style="margin: 1rem 0;">
-    <a href="https://github.com/angelinabrunelle" target="_blank" style="margin: 0 10px;">GitHub</a> |
-    <a href="https://www.linkedin.com/in/angelinabrunelle" target="_blank" style="margin: 0 10px;">LinkedIn</a> |
+    <a href="https://github.com/angelinabdev" target="_blank" style="margin: 0 10px;">GitHub</a> |
     <a href="https://www.instagram.com/easyspeechaac" target="_blank" style="margin: 0 10px;">Instagram</a>
   </div>
 </section>
@@ -1181,12 +1180,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // --- Firebase Setup ---
   const firebaseConfig = {
-    apiKey: "AIzaSyC0VUUaKNeAVfaNi0BqdiA2VTof0Me9Au8",
+    apiKey: "",
     authDomain: "easy-speech-aac.firebaseapp.com",
     projectId: "easy-speech-aac",
     storageBucket: "easy-speech-aac.appspot.com",
-    messagingSenderId: "2728698117",
-    appId: "1:2728698117:web:5b3db8f5f25bd00756976c"
+    messagingSenderId: "",
+    appId: ""
   };
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
