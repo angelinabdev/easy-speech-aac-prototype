@@ -1,0 +1,407 @@
+
+// --- Phrase Lists & Favorites ---
+// Helper to create user-specific localStorage keys
+function userKey(key) {
+  return `${currentUserId}_${key}`;
+}
+
+// Speak text aloud with prefix
+function speakText(text, type) {
+  if (!window.speechSynthesis) {
+    alert("Speech synthesis not supported.");
+    return;
+  }
+  const prefixMap = {
+    want: 'I want',
+    need: 'I need',
+    feel: 'I feel'
+  };
+  const prefix = prefixMap[type] || '';
+  const utteranceText = prefix ? `${prefix} ${text}` : text;
+  const utterance = new SpeechSynthesisUtterance(utteranceText);
+  window.speechSynthesis.speak(utterance);
+}
+
+// Get favorites
+function getFavorites() {
+  return JSON.parse(localStorage.getItem(userKey('favoritePhrases')) || '[]');
+}
+
+// Save favorites
+function saveFavorites(favs) {
+  localStorage.setItem(userKey('favoritePhrases'), JSON.stringify(favs));
+}
+
+// Load phrases (want, need, feel)
+function loadPhrases(type) {
+  const data = localStorage.getItem(userKey(`${type}Phrases`));
+  if (!data) return [];
+  const arr = JSON.parse(data);
+  // Convert old format (string array) to new format (object array)
+  if (arr.length && typeof arr[0] === 'string') {
+    return arr.map(text => ({ text, usageCount: 0 }));
+  }
+  return arr;
+}
+
+// Save phrases of a given type for current user
+function savePhrases(type, phrases) {
+  localStorage.setItem(userKey(`${type}Phrases`), JSON.stringify(phrases));
+}
+
+// Update star button UI
+function updateStarBtn(btn, isFav) {
+  btn.textContent = isFav ? '★' : '☆';
+  btn.title = isFav ? 'Remove from favorites' : 'Add to favorites';
+  btn.style.color = isFav ? 'gold' : '#ccc';
+  btn.style.fontSize = '1.2rem';
+  btn.style.border = 'none';
+  btn.style.background = 'none';
+  btn.style.cursor = 'pointer';
+  btn.style.userSelect = 'none';
+  btn.style.marginLeft = '8px';
+}
+
+// Create a phrase list item with star and delete buttons
+function createPhraseListItem(phraseObj, type) {
+  const { text, usageCount = 0 } = phraseObj;
+
+  const li = document.createElement('li');
+  li.style.display = 'flex';
+  li.style.alignItems = 'center';
+  li.style.justifyContent = 'space-between';
+  li.style.cursor = 'pointer';
+
+  const phraseSpan = document.createElement('span');
+  phraseSpan.textContent = text;
+  phraseSpan.style.flexGrow = '1';
+  phraseSpan.style.userSelect = 'none';
+
+  phraseSpan.onclick = () => {
+    speakText(text, type);
+
+    // Increment usage count
+    let phrases = loadPhrases(type);
+    const index = phrases.findIndex(p => p.text === text);
+    if (index !== -1) {
+      phrases[index].usageCount = (phrases[index].usageCount || 0) + 1;
+      savePhrases(type, phrases);
+      renderPhraseList(type);
+    }
+  };
+
+  // Star button
+  const starBtn = document.createElement('button');
+  const favorites = getFavorites();
+  const isFav = favorites.some(fav => fav.text === text && fav.type === type);
+  updateStarBtn(starBtn, isFav);
+  starBtn.onclick = (e) => {
+    e.stopPropagation();
+    toggleFavorite(text, type, starBtn);
+  };
+
+  // Delete button
+  const deleteBtn = document.createElement('button');
+  deleteBtn.textContent = '❌';
+  deleteBtn.title = 'Delete phrase';
+  deleteBtn.style.marginLeft = '8px';
+  deleteBtn.onclick = (e) => {
+    e.stopPropagation();
+    if(confirm(`Delete phrase "${text}"?`)) {
+      deletePhrase(text, type, li);
+    }
+  };
+
+  // Container for star and delete buttons side by side
+  const rightContainer = document.createElement('div');
+  rightContainer.style.display = 'flex';
+  rightContainer.appendChild(starBtn);
+  rightContainer.appendChild(deleteBtn);
+
+  li.appendChild(phraseSpan);
+  li.appendChild(rightContainer);
+
+  return li;
+}
+
+// Delete a phrase from list and update storage
+function deletePhrase(text, type, liElement) {
+  let phrases = loadPhrases(type);
+  phrases = phrases.filter(p => p.text !== text);
+  savePhrases(type, phrases);
+  liElement.remove();
+  renderPhraseList(type);
+}
+
+// Add phrase to list
+function addPhrase(type) {
+  const input = document.getElementById(type + '-input');
+  const text = input.value.trim();
+  if (!text) {
+    alert('Please enter a phrase');
+    return;
+  }
+
+  // Load existing phrases
+  let phrases = loadPhrases(type);
+
+  // Prevent duplicates
+  const exists = phrases.some(p => p.text === text);
+  if (exists) {
+    alert('Phrase already exists.');
+    return;
+  }
+
+  phrases.push({ text, usageCount: 0 });
+  savePhrases(type, phrases);
+
+  renderPhraseList(type);
+  input.value = '';
+
+  // --- Instantly update dropdown if open ---
+  const dropdownContent = document.getElementById(`${type}-dropdown-content`);
+  if (dropdownContent && dropdownContent.style.display === 'block') {
+    // Repopulate the dropdown
+    toggleDropdown(type);
+    toggleDropdown(type); 
+  }
+}
+
+// Toggle favorite status
+function toggleFavorite(text, type, starBtn) {
+  let favorites = getFavorites();
+  const index = favorites.findIndex(fav => fav.text === text && fav.type === type);
+  if (index === -1) {
+    favorites.push({ text, type });
+    updateStarBtn(starBtn, true);
+  } else {
+    favorites.splice(index, 1);
+    updateStarBtn(starBtn, false);
+  }
+  saveFavorites(favorites);
+  renderFavorites();
+}
+// Delete a phrase from list and update storage
+function deletePhrase(text, type, liElement) {
+  // Remove from main phrase list
+  let phrases = loadPhrases(type);
+  phrases = phrases.filter(p => p.text !== text);
+  savePhrases(type, phrases);
+
+  // Remove from favorites if present
+  let favorites = getFavorites();
+  const favIndex = favorites.findIndex(fav => fav.text === text && fav.type === type);
+  if (favIndex !== -1) {
+    favorites.splice(favIndex, 1);
+    saveFavorites(favorites);
+    renderFavorites();
+  }
+
+  // Remove the list element and re-render
+  liElement.remove();
+  renderPhraseList(type);
+}
+
+// Render favorites list
+function renderFavorites() {
+  const favorites = getFavorites();
+  const wantList = document.getElementById('favorites-want');
+  const needList = document.getElementById('favorites-need');
+  const feelList = document.getElementById('favorites-feel');
+
+  wantList.innerHTML = '';
+  needList.innerHTML = '';
+  feelList.innerHTML = '';
+
+  if (favorites.length === 0) {
+    ['want', 'need', 'feel'].forEach(type => {
+      const list = document.getElementById('favorites-' + type);
+      const li = document.createElement('li');
+      li.style.color = '#888';
+      li.textContent = 'No favorites yet.';
+      list.appendChild(li);
+    });
+    return;
+  }
+
+  favorites.forEach(fav => {
+    const li = document.createElement('li');
+    li.style.cursor = 'pointer';
+    li.textContent = fav.text;
+    li.onclick = () => speakText(fav.text, fav.type);
+
+    const list = document.getElementById('favorites-' + fav.type);
+    if (list) list.appendChild(li);
+  });
+}
+
+// Render phrases of a specific type (want, need, feel)
+function renderPhraseList(type) {
+  const list = document.getElementById(type + '-list');
+  list.innerHTML = '';
+  let phrases = loadPhrases(type);
+
+  const sortSelect = document.getElementById(type + '-sort');
+  const sortMode = sortSelect ? sortSelect.value : 'az';
+
+  if (sortMode === 'az') {
+    phrases.sort((a, b) => a.text.localeCompare(b.text));
+  } else if (sortMode === 'za') {
+    phrases.sort((a, b) => b.text.localeCompare(a.text));
+  } else if (sortMode === 'usage') {
+    phrases.sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0));
+  }
+
+phrases.forEach(phraseObj => {
+  const li = createPhraseListItem(phraseObj, type);
+  list.appendChild(li);
+});
+}
+
+// Update all star buttons after clearing favorites
+function setupSortListeners() {
+  ['want', 'need', 'feel'].forEach(type => {
+    const sortSelect = document.getElementById(type + '-sort');
+    if (sortSelect) {
+      sortSelect.addEventListener('change', () => {
+        console.log(`Sort changed for ${type}:`, sortSelect.value); 
+        renderPhraseList(type);
+      });
+    }
+  });
+}
+
+// Setup event listeners
+document.getElementById('want-add-btn').onclick = () => addPhrase('want');
+document.getElementById('need-add-btn').onclick = () => addPhrase('need');
+document.getElementById('feel-add-btn').onclick = () => addPhrase('feel');
+
+// Clear all favorite phrases button handler
+document.getElementById('clear-favorites-btn').onclick = () => {
+  if (confirm("Are you sure you want to clear all favorite phrases?")) {
+    localStorage.removeItem(userKey('favoritePhrases'));
+    renderFavorites();
+    updateAllStars();
+  }
+};
+
+// Initialize favorites and phrase lists on load
+renderFavorites();
+['want', 'need', 'feel'].forEach(renderPhraseList);
+setupSortListeners();
+
+function setupPhraseSearch(type) {
+  const searchInput = document.getElementById(type + '-search');
+  const list = document.getElementById(type + '-list');
+
+  if (!searchInput || !list) return;
+
+  searchInput.addEventListener('input', () => {
+    const filter = searchInput.value.toLowerCase();
+    const items = list.querySelectorAll('li');
+    items.forEach(li => {
+      const text = li.querySelector('span').textContent.toLowerCase();
+      li.style.display = text.includes(filter) ? '' : 'none';
+    });
+  });
+}
+
+function toggleDropdown(category) {
+  const content = document.getElementById(category + '-dropdown-content');
+  if (!content) return;
+  if (content.style.display === 'none' || content.style.display === '') {
+    // Show and populate dropdown
+    const phrases = loadPhrases(category);
+    content.innerHTML = '';
+    if (phrases.length === 0) {
+      content.innerHTML = '<div style="color:#888;">No phrases added yet.</div>';
+    } else {
+phrases.forEach(p => {
+  const li = createPhraseListItem(p, category);
+  // Adjust styles to fit dropdown div
+  li.style.cursor = 'pointer';
+  li.style.marginBottom = '4px';
+  li.style.padding = '2px 4px';
+  li.style.borderRadius = '4px';
+  li.style.backgroundColor = '#f0f0f0';
+
+  //speak the phrase
+  li.querySelector('span').onclick = () => speakText(p.text, category);
+
+  content.appendChild(li);
+      });
+    }
+    content.style.display = 'block';
+  } else {
+    content.style.display = 'none';
+  }
+}
+
+// Attach dropdown button event listeners after DOM ready or script load
+['want', 'need', 'feel'].forEach(category => {
+  const btn = document.getElementById(category + '-dropdown-btn');
+  if (btn) {
+    btn.addEventListener('click', () => toggleDropdown(category));
+  }
+});// --- Render phrase list with search and feedback ---
+function renderPhraseList(type, searchTerm = '') {
+  const list = document.getElementById(`${type}-list`);
+  if (!list) return;
+  list.innerHTML = '';
+
+  let phrases = loadPhrases(type); 
+
+  // Sort by usageCount descending
+  phrases.sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0));
+
+  // Filter based on search term
+  const filtered = searchTerm 
+    ? phrases.filter(p => p.text.toLowerCase().includes(searchTerm))
+    : phrases;
+
+  if (filtered.length === 0) {
+    const li = document.createElement('li');
+    li.style.color = '#888';
+    li.textContent = searchTerm 
+      ? `No phrases found matching "${searchTerm}".` 
+      : 'No phrases yet.';
+    list.appendChild(li);
+    return;
+  }
+
+  filtered.forEach(phrase => {
+    const li = createPhraseListItem(phrase, type);
+    list.appendChild(li);
+  });
+
+  if (searchTerm) {
+    const infoLi = document.createElement('li');
+    infoLi.style.color = '#555';
+    infoLi.style.fontStyle = 'italic';
+    infoLi.textContent = `Found ${filtered.length} match${filtered.length > 1 ? 'es' : ''}.`;
+    list.appendChild(infoLi);
+  }
+}
+
+// --- Setup search inputs ---
+function setupSearch() {
+  ['want', 'need', 'feel'].forEach(type => {
+    const input = document.getElementById(`search-${type}`);
+    if (!input) return;
+
+    // Trigger on every key press
+    input.addEventListener('input', () => {
+      renderPhraseList(type, input.value.trim().toLowerCase());
+    });
+
+    // Trigger on Enter key
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        renderPhraseList(type, input.value.trim().toLowerCase());
+      }
+    });
+  });
+}
+
+// Call setup after DOM is ready
+document.addEventListener('DOMContentLoaded', setupSearch);
