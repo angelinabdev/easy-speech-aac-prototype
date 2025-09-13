@@ -6,11 +6,14 @@ Unlike costly alternatives, this platform empowers users with accessible, resear
 Easy Speech AAC was created from personal experience as the caretaker of a nonverbal sibling. The goal is to **make communication easier, more inclusive, and more affordable for everyone.**
 
 # Features  
-**Custom Phrases** → Add, save, and favorite words or sentences to use anytime  
-**Daily Planner** → Drag-and-drop activities with emoji support to structure routines  
-**Mood Tracker** → Quickly record and visualize emotions throughout the day  
-**Local Data Storage** → All progress is saved on the device for privacy  
-**User Profiles** → Keep data organized for different individuals with `currentUserId`  
+- **Role-Based Access:** Separate, tailored experiences for `Users` and `Caregivers`.
+- **Daily Planner:** An interactive, drag-and-drop schedule to organize daily tasks and routines.
+- **Phrase and Soundboard:** Customizable and pre-built phrases and sounds for quick communication, with adjustable voice settings.
+- **Mood Tracking & Analytics:** A simple interface to log emotions, with historical data and visual charts to track patterns.
+- **Secure Notes:** A passcode-protected section for caregivers to keep private notes and observations.
+- **About Me Section:** A shareable and printable summary of essential personal information, including medical notes and contacts.
+- **Gamified Learning:** An engaging "Sentence Builder" game to help users practice language skills.
+- **Device-Only Storage:** All user data is stored exclusively on the user's device for maximum privacy and security.
 
 # Tech Stack  
 *Frontend:* HTML, CSS, JavaScript  
